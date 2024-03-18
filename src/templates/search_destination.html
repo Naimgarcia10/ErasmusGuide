@@ -1,47 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Destino</title>
-</head>
-<body>
+<form id="searchForm">
+    <div>
+        <label for="grade">Grado:</label>
+        <select id="grade" name="grade">
+            <option value="" selected disabled>Seleccione un grado</option>
+        </select>
+    </div>
+    
+    <!-- Repite para los otros selects -->
+    
+    <div>
+        <label for="university">Universidad:</label>
+        <select id="university" name="university">
+            <option value="" selected disabled>Seleccione una universidad</option>
+        </select>
+    </div>
+    
+    <div>
+        <label for="country">País:</label>
+        <select id="country" name="country">
+            <option value="" selected disabled>Seleccione un país</option>
+        </select>
+    </div>
+    
+    <div>
+        <label for="city">Ciudad:</label>
+        <select id="city" name="city">
+            <option value="" selected disabled>Seleccione una ciudad</option>
+        </select>
+    </div>
+    
+    <button type="button" id="confirmButton">Confirmar</button>
+</form>
 
-    <form id="searchForm">
-
-        <div>
-            <label for="university">Universidad:</label>
-            <select id="university" name="university">
-                <!-- Las opciones se rellenarán dinámicamente con JavaScript -->
-            </select>
-        </div>
-        
-        <div>
-            <label for="grade">Grado:</label>
-            <select id="grade" name="grade">
-                <!-- Las opciones se rellenarán dinámicamente con JavaScript -->
-            </select>
-        </div>
-        
-        <div>
-            <label for="country">País:</label>
-            <select id="country" name="country">
-                <!-- Las opciones se rellenarán dinámicamente con JavaScript -->
-            </select>
-        </div>
-        
-        <div>
-            <label for="city">Ciudad:</label>
-            <select id="city" name="city">
-                <!-- Las opciones se rellenarán dinámicamente con JavaScript -->
-            </select>
-        </div>
-        
-        <button type="submit">Confirmar</button>
-    </form>
-
-    <!-- Especifica que el script es un módulo para poder usar import -->
-    <script type="module" src="../scripts/search_destination.js"></script>
-
-</body>
-</html>
+<script type="module" src="../scripts/search_destination.js"></script>

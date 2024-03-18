@@ -69,5 +69,15 @@ async function cargarDestinos() {
     }
 }
 
+
 // Ejecuta la carga de destinos al cargar la página
 document.addEventListener('DOMContentLoaded', cargarDestinos);
+
+//Agrega evento al botón de confirmación para redirigir a la nueva página
+document.getElementById('confirmButton').addEventListener('click', redirectToAvailableDestinations);
+
+// Función para redirigir a la nueva página
+function redirectToAvailableDestinations() {
+    // Aquí puedes realizar comprobaciones antes de la redirección si es necesario
+    window.location.href = "../templates/available_destinations.html";
+}
