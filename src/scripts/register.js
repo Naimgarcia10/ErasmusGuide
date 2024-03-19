@@ -10,16 +10,19 @@ const registerForm = document.getElementById('register-form');
 
 // Manejar el evento submit del formulario
 registerForm.addEventListener('submit', async (e) => {
-  e.preventDefault(); // Evitar que el formulario se envíe
+  e.preventDefault(); 
+  registerUser();
+});
 
-  // Obtén los datos del formulario
+async function registerUser(){
   const email = registerForm['email'].value;
   const password = registerForm['password'].value;
   const password2 = registerForm['password2'].value;
+  const temporaryMessage = document.getElementById('temporary-message-register');
 
   // Verifica que las contraseñas coincidan
   if (password !== password2) {
-    alert('Las contraseñas no coinciden!');
+    temporaryMessage.textContent = 'Las contraseñas no coinciden';
     return;
   }
 
@@ -27,21 +30,34 @@ registerForm.addEventListener('submit', async (e) => {
   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
     // Limpiar el formulario
     registerForm.reset();
-    alert('Usuario creado con éxito!');
     auth.signOut(); 
     sendEmailVerification(auth.currentUser).then(() => {
-      alert('Se ha enviado un correo de verificación');
+    temporaryMessage.textContent = 'Usuario creado con éxito. Por favor, verifica tu correo electrónico para continuar';
     });
+    setTimeout(function() {
+      temporaryMessage.textContent = '';
+      location.href = 'login.html';
+    }, 5000);
   }).catch((error) => {
     const errorCode = error.code;
     if (errorCode === 'auth/email-already-in-use') {
-      alert('El correo ya está en uso');
+      temporaryMessage.textContent = 'El correo ya está en uso';
     } else if (errorCode === 'auth/invalid-email') {
-      alert('El correo no es válido');
+      temporaryMessage.textContent = 'El correo no es válido';
     } else if (errorCode === 'auth/weak-password') {
-      alert('La contraseña debe tener al menos 6 caracteres');
+      temporaryMessage.textContent = 'La contraseña debe tener al menos 6 caracteres';
     } else {
-      alert('Error desconocido');
+      temporaryMessage.textContent = temporaryMessage.message;
     }
   });
-});
+}
+
+async function deleteUnverifiedUsers() {
+  
+}
+
+export { deleteUnverifiedUsers };
+
+setTimeout(deleteUnverifiedUsers, 10000);
+
+
