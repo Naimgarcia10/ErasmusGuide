@@ -27,7 +27,7 @@ async function loginUser(){
         sessionStorage.setItem('user', JSON.stringify(userCredential.user));
         setTimeout(function() {
         temporaryMessage.textContent = '';
-        location.href = 'pruebas.html';
+        location.href = 'search_destination.html';
         }, 3000);
     }).catch((error) => {
         const errorCode = error.code;
