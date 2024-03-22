@@ -2,6 +2,8 @@
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
+let destinosData;
+
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
 
@@ -60,10 +62,8 @@ async function cargarUniversidadesFiltradas(grade, university, country, city) {
     const destinosSnap = await getDoc(destinosRef);
 
     if (destinosSnap.exists()) {
-        const destinosData = destinosSnap.data();
-        console.log("Datos sin filtrar " + destinosData);
+        destinosData = destinosSnap.data();
         const filteredData = filtrarDestinos(destinosData, grade, university, country, city);
-        console.log("Datos filtrados " + filteredData);
         mostrarUniversidades(filteredData);
     } else {
         console.log("No se encontraron universidades!");
@@ -92,6 +92,47 @@ function mostrarUniversidades(universidades) {
         universitiesContainer.appendChild(card);
     }
 }
+
+function ordenarYMostrarUniversidades(campo, esNumerico = false) {
+    // Ordena los datos basados en el campo elegido
+    const universidadesOrdenadas = ordenarUniversidades(campo, esNumerico);
+    // Muestra las universidades ordenadas
+    mostrarUniversidades(universidadesOrdenadas);
+}
+
+function ordenarUniversidades(campo, esNumerico = false) {
+    return Object.entries(destinosData).sort((a, b) => {
+        // Inicializa valA y valB, asegurándote de que sean definidos.
+        let valA = a[1][campo] || (esNumerico ? "0" : "");
+        let valB = b[1][campo] || (esNumerico ? "0" : "");
+
+        if (campo === 'TitulacionesDisponibles') {
+            valA = [...(valA || [])].sort()[0] || ""; // Asegura que valA sea un array antes de copiar y ordenar
+            valB = [...(valB || [])].sort()[0] || "";
+        }
+
+        // Procede con la comparación
+        if (esNumerico) {
+            return Number(valA) - Number(valB);
+        } else {
+            // Usa un valor por defecto si valA o valB son undefined para evitar errores
+            valA = valA || "";
+            valB = valB || "";
+            return valA.localeCompare(valB);
+        }
+    }).reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
+}
+
+// Eventos para los botones de ordenación
+document.getElementById('sortByAgreementNumber').addEventListener('click', () => ordenarYMostrarUniversidades('NumeroConvenio', true));
+document.getElementById('sortByCountry').addEventListener('click', () => ordenarYMostrarUniversidades('Pais'));
+document.getElementById('sortByCity').addEventListener('click', () => ordenarYMostrarUniversidades('Ciudad'));
+document.getElementById('sortByGrade').addEventListener('click', () => ordenarYMostrarUniversidades('Grado'));
+document.getElementById('sortByLanguage').addEventListener('click', () => ordenarYMostrarUniversidades('IdiomaImparticion'));
+document.getElementById('sortByPlaces').addEventListener('click', () => ordenarYMostrarUniversidades('Plazas', true));
+document.getElementById('sortByDuration').addEventListener('click', () => ordenarYMostrarUniversidades('DuracionMeses', true));
+document.getElementById('sortByStudies').addEventListener('click', () => ordenarYMostrarUniversidades('TitulacionesDisponibles'));
+
 
 
 // Ejecuta la carga de universidades al cargar la página
