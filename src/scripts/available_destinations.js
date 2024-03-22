@@ -8,25 +8,6 @@ const { app, db } = initializeFirebase();
 // Referencia al documento específico de donde se obtendrán los datos
 const destinosRef = doc(db, 'destinos', 'Universidades');
 
-// Función asíncrona que obtiene los datos y los carga en la página
-async function cargarUniversidades() {
-    const destinosSnap = await getDoc(destinosRef);
-
-    if (destinosSnap.exists()) {
-        const destinosData = destinosSnap.data();
-        const universitiesContainer = document.getElementById('universitiesContainer');
-        // Limpia el contenedor antes de agregar nuevas tarjetas
-        universitiesContainer.innerHTML = '';
-
-        for (const [universityName, universityData] of Object.entries(destinosData)) {
-            const card = crearTarjetaUniversidad(universityName, universityData);
-            universitiesContainer.appendChild(card);
-        }
-    } else {
-        console.log("No se encontraron universidades!");
-    }
-}
-
 // Función para crear la tarjeta de una universidad
 function crearTarjetaUniversidad(universityName, universityData) {
     const card = document.createElement('div');
@@ -66,10 +47,63 @@ function crearTarjetaUniversidad(universityName, universityData) {
     infoPlazas.textContent = `Plazas: ${universityData.Plazas}`;
     card.appendChild(infoPlazas);
 
+    const infoTitulacionesDisponibles = document.createElement('p');
+    infoTitulacionesDisponibles.textContent = `Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}`;
+    card.appendChild(infoTitulacionesDisponibles);
+
 
 
     return card;
 }
 
+async function cargarUniversidadesFiltradas(grade, university, country, city) {
+    const destinosSnap = await getDoc(destinosRef);
+
+    if (destinosSnap.exists()) {
+        const destinosData = destinosSnap.data();
+        console.log("Datos sin filtrar " + destinosData);
+        const filteredData = filtrarDestinos(destinosData, grade, university, country, city);
+        console.log("Datos filtrados " + filteredData);
+        mostrarUniversidades(filteredData);
+    } else {
+        console.log("No se encontraron universidades!");
+    }
+}
+
+function filtrarDestinos(data, grade, university, country, city) {
+    return Object.entries(data).reduce((filtered, [universityName, universityData]) => {
+        if ((grade && !universityData.TitulacionesDisponibles.includes(grade)) ||
+            (university && universityName !== university) ||
+            (country && universityData.Pais !== country) ||
+            (city && universityData.Ciudad !== city)) {
+            return filtered;
+        }
+        filtered[universityName] = universityData;
+        return filtered;
+    }, {});
+}
+
+function mostrarUniversidades(universidades) {
+    const universitiesContainer = document.getElementById('universitiesContainer');
+    universitiesContainer.innerHTML = ''; // Limpia el contenedor
+
+    for (const [universityName, universityData] of Object.entries(universidades)) {
+        const card = crearTarjetaUniversidad(universityName, universityData);
+        universitiesContainer.appendChild(card);
+    }
+}
+
+
 // Ejecuta la carga de universidades al cargar la página
-document.addEventListener('DOMContentLoaded', cargarUniversidades);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gradeFilter = urlParams.get('grade');
+    const universityFilter = urlParams.get('university');
+    const countryFilter = urlParams.get('country');
+    const cityFilter = urlParams.get('city');
+
+    cargarUniversidadesFiltradas(gradeFilter, universityFilter, countryFilter, cityFilter);
+});
+
+

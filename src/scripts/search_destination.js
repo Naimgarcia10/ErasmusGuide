@@ -78,6 +78,18 @@ document.getElementById('confirmButton').addEventListener('click', redirectToAva
 
 // Función para redirigir a la nueva página
 function redirectToAvailableDestinations() {
-    // Aquí puedes realizar comprobaciones antes de la redirección si es necesario
-    window.location.href = "../templates/available_destinations.html";
+    const gradeValue = document.getElementById('grade').value;
+    const universityValue = document.getElementById('university').value;
+    const countryValue = document.getElementById('country').value;
+    const cityValue = document.getElementById('city').value;
+
+    const params = new URLSearchParams({
+        grade: gradeValue,
+        university: universityValue,
+        country: countryValue,
+        city: cityValue
+    });
+
+    window.location.href = `../templates/available_destinations.html?${params.toString()}`;
 }
+
