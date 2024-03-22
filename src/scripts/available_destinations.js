@@ -127,11 +127,10 @@ function ordenarUniversidades(campo, esNumerico = false) {
 document.getElementById('sortByAgreementNumber').addEventListener('click', () => ordenarYMostrarUniversidades('NumeroConvenio', true));
 document.getElementById('sortByCountry').addEventListener('click', () => ordenarYMostrarUniversidades('Pais'));
 document.getElementById('sortByCity').addEventListener('click', () => ordenarYMostrarUniversidades('Ciudad'));
-document.getElementById('sortByGrade').addEventListener('click', () => ordenarYMostrarUniversidades('Grado'));
+document.getElementById('sortByGrade').addEventListener('click', () => ordenarYMostrarUniversidades('TitulacionesDisponibles'));
 document.getElementById('sortByLanguage').addEventListener('click', () => ordenarYMostrarUniversidades('IdiomaImparticion'));
 document.getElementById('sortByPlaces').addEventListener('click', () => ordenarYMostrarUniversidades('Plazas', true));
 document.getElementById('sortByDuration').addEventListener('click', () => ordenarYMostrarUniversidades('DuracionMeses', true));
-document.getElementById('sortByStudies').addEventListener('click', () => ordenarYMostrarUniversidades('TitulacionesDisponibles'));
 
 
 
