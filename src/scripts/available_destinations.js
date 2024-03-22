@@ -3,6 +3,8 @@ import { initializeFirebase } from "../firebase/firebaseConnection.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 let destinosData;
+let universidadesFiltradas = {};
+
 
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
@@ -63,12 +65,13 @@ async function cargarUniversidadesFiltradas(grade, university, country, city) {
 
     if (destinosSnap.exists()) {
         destinosData = destinosSnap.data();
-        const filteredData = filtrarDestinos(destinosData, grade, university, country, city);
-        mostrarUniversidades(filteredData);
+        universidadesFiltradas = filtrarDestinos(destinosData, grade, university, country, city); // Actualiza universidadesFiltradas
+        mostrarUniversidades(universidadesFiltradas);
     } else {
         console.log("No se encontraron universidades!");
     }
 }
+
 
 function filtrarDestinos(data, grade, university, country, city) {
     return Object.entries(data).reduce((filtered, [universityName, universityData]) => {
@@ -94,28 +97,24 @@ function mostrarUniversidades(universidades) {
 }
 
 function ordenarYMostrarUniversidades(campo, esNumerico = false) {
-    // Ordena los datos basados en el campo elegido
-    const universidadesOrdenadas = ordenarUniversidades(campo, esNumerico);
-    // Muestra las universidades ordenadas
+    // Asegúrate de usar universidadesFiltradas en lugar de destinosData
+    const universidadesOrdenadas = ordenarUniversidades(campo, esNumerico, universidadesFiltradas);
     mostrarUniversidades(universidadesOrdenadas);
 }
 
-function ordenarUniversidades(campo, esNumerico = false) {
-    return Object.entries(destinosData).sort((a, b) => {
-        // Inicializa valA y valB, asegurándote de que sean definidos.
+function ordenarUniversidades(campo, esNumerico = false, datosParaOrdenar) {
+    return Object.entries(datosParaOrdenar).sort((a, b) => {
         let valA = a[1][campo] || (esNumerico ? "0" : "");
         let valB = b[1][campo] || (esNumerico ? "0" : "");
 
         if (campo === 'TitulacionesDisponibles') {
-            valA = [...(valA || [])].sort()[0] || ""; // Asegura que valA sea un array antes de copiar y ordenar
+            valA = [...(valA || [])].sort()[0] || ""; 
             valB = [...(valB || [])].sort()[0] || "";
         }
 
-        // Procede con la comparación
         if (esNumerico) {
             return Number(valA) - Number(valB);
         } else {
-            // Usa un valor por defecto si valA o valB son undefined para evitar errores
             valA = valA || "";
             valB = valB || "";
             return valA.localeCompare(valB);
