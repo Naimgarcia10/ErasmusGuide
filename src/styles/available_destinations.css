@@ -18,3 +18,45 @@
 .card h3 {
     margin-top: 0;
 }
+
+/* Estilo básico para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se mantiene en lugar */
+    z-index: 1; /* Se sitúa encima de todo */
+    left: 0;
+    top: 0;
+    width: 100%; /* Anchura completa */
+    height: 100%; /* Altura completa */
+    overflow: auto; /* Habilita el scroll si es necesario */
+    background-color: rgb(0,0,0); /* Color de fondo */
+    background-color: rgba(0,0,0,0.4); /* Color de fondo con opacidad */
+}
+
+/* Contenido/Estilo del modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% desde el top y centrado */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Puede ser más o menos, dependiendo del diseño */
+}
+
+/* El botón cerrar */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#añadirUniversidad {
+    display: none;
+}

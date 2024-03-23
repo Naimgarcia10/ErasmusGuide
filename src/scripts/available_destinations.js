@@ -4,6 +4,7 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-
 
 let destinosData;
 let universidadesFiltradas = {};
+let esCoordinador = true; 
 
 
 // Inicializa Firebase
@@ -55,8 +56,22 @@ function crearTarjetaUniversidad(universityName, universityData) {
     infoTitulacionesDisponibles.textContent = `Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}`;
     card.appendChild(infoTitulacionesDisponibles);
 
+    if (esCoordinador) {
+        const iconoEditar = new Image();
+        iconoEditar.src = '../media/lapiz.png';
+        iconoEditar.addEventListener('click', () => abrirDialogoEditar(universityName, universityData));
+        card.appendChild(iconoEditar);
+
+        const iconoEliminar = new Image();
+        iconoEliminar.src = '../media/papelera.png';
+        iconoEliminar.addEventListener('click', () => eliminarUniversidad(universityName));
+        card.appendChild(iconoEliminar);
+
+        const añadirUniversidadButton = document.getElementById('añadirUniversidad');
+        añadirUniversidadButton.style.display = 'block';
 
 
+    }
     return card;
 }
 
@@ -71,7 +86,6 @@ async function cargarUniversidadesFiltradas(grade, university, country, city) {
         console.log("No se encontraron universidades!");
     }
 }
-
 
 function filtrarDestinos(data, grade, university, country, city) {
     return Object.entries(data).reduce((filtered, [universityName, universityData]) => {
@@ -122,6 +136,154 @@ function ordenarUniversidades(campo, esNumerico = false, datosParaOrdenar) {
     }).reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
 }
 
+/*##################################################################
+################### FUNCIONES PARA EL COORDINADOR ##################
+##################################################################*/
+
+function abrirDialogoEditar(universityName, universityData) {
+    // Mostrar el modal
+    const modal = document.getElementById('modalEditar');
+    modal.style.display = "block";
+
+    // Obtener el contenedor del contenido del modal y limpiarlo
+    const modalContent = document.querySelector('.modal-content');
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+        <label for="nombreUniversidad">Nombre:</label>
+        <input type="text" id="nombreUniversidad" name="nombreUniversidad" value="${universityName}"><br>
+
+        <!-- Repite esto para cada campo de información de la universidad que quieras editar -->
+
+        <label for="pais">País:</label>
+        <input type="text" id="pais" name="pais" value="${universityData.Pais}"><br>
+
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" value="${universityData.Ciudad}"><br>
+
+        <label for="numeroConvenio">Número de convenio:</label>
+        <input type="text" id="numeroConvenio" name="numeroConvenio" value="${universityData.NumeroConvenio}"><br>
+
+        <label for="idiomaImparticion">Idioma de impartición:</label>
+        <input type="text" id="idiomaImparticion" name="idiomaImparticion" value="${universityData.IdiomaImparticion}"><br>
+        
+        <label for="estudios">Estudios Ofrecidos:</label>
+        <input type="text" id="estudios" name="estudios" value="${universityData.Estudios}"><br>
+
+        <label for="duracionMeses">Duración (meses):</label>
+        <input type="text" id="duracionMeses" name="duracionMeses" value="${universityData.DuracionMeses}"><br>
+
+        <label for="plazas">Plazas:</label>
+        <input type="text" id="plazas" name="plazas" value="${universityData.Plazas}"><br>
+
+        <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
+        <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles" value="${universityData.TitulacionesDisponibles.join(', ')}"><br>
+
+        <button id="guardarCambios">Guardar cambios</button>
+
+    `;
+
+    // Añadir el formulario al modal
+    modalContent.appendChild(formContainer);
+
+    // Añadir funcionalidad para cerrar el modal
+    const closeButton = document.querySelector('.close-button');
+    closeButton.onclick = function() {
+        modal.style.display = "none";
+        modalContent.removeChild(formContainer); // Limpiar el formulario
+    };
+
+    // Añadir funcionalidad para guardar los cambios
+    const guardarCambiosButton = document.getElementById('guardarCambios');
+    guardarCambiosButton.onclick = function() {
+        console.log('Cambios guardados!');
+    };
+
+    // Asegúrate de manejar el guardado de los cambios aquí,
+    // posiblemente enviando los datos actualizados a tu base de datos
+}
+
+function eliminarUniversidad(universityName) {
+    // Mensaje de confirmación antes de proceder a eliminar
+    const confirmar = confirm(`Se va a borrar el destino: Universidad de ${universityName}, ¿está seguro?`);
+    
+    if (confirmar) {
+        // Aquí va la lógica para eliminar la universidad de la base de datos
+        console.log(`Eliminando la universidad: ${universityName}`);
+        // Por ejemplo: eliminarUniversidadDeLaBaseDeDatos(universityName);
+        
+        // Después de eliminar, podrías refrescar la lista de universidades mostradas o mostrar un mensaje de éxito.
+    } else {
+        // Si el usuario cancela, simplemente cerramos el diálogo sin hacer nada
+        console.log("Operación cancelada");
+    }
+}
+
+
+// En tu JavaScript, similar a cómo manejas los otros iconos
+document.getElementById('añadirUniversidad').addEventListener('click', () => {
+    console.log("Añadir universidad...");
+
+    // Mostrar el modal
+    const modal = document.getElementById('modalEditar');
+    modal.style.display = "block";
+
+    // Obtener el contenedor del contenido del modal y limpiarlo
+    const modalContent = document.querySelector('.modal-content');
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+        <label for="nombreUniversidad">Nombre:</label>
+        <input type="text" id="nombreUniversidad" name="nombreUniversidad"><br>
+
+        <label for="pais">País:</label>
+        <input type="text" id="pais" name="pais"><br>
+
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad"><br>
+
+        <label for="numeroConvenio">Número de convenio:</label>
+        <input type="text" id="numeroConvenio" name="numeroConvenio"><br>
+
+        <label for="idiomaImparticion">Idioma de impartición:</label>
+        <input type="text" id="idiomaImparticion" name="idiomaImparticion"><br>
+        
+        <label for="estudios">Estudios Ofrecidos:</label>
+        <input type="text" id="estudios" name="estudios"><br>
+
+        <label for="duracionMeses">Duración (meses):</label>
+        <input type="text" id="duracionMeses" name="duracionMeses"><br>
+
+        <label for="plazas">Plazas:</label>
+        <input type="text" id="plazas" name="plazas"><br>
+
+        <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
+        <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles"><br>
+
+        <button id="guardarCambios">Guardar cambios</button>
+
+    `;
+
+    // Añadir el formulario al modal
+    modalContent.appendChild(formContainer);
+
+    // Añadir funcionalidad para cerrar el modal
+    const closeButton = document.querySelector('.close-button');
+    closeButton.onclick = function() {
+        modal.style.display = "none";
+        modalContent.removeChild(formContainer); // Limpiar el formulario
+    };
+
+    // Añadir funcionalidad para guardar los cambios
+    const guardarCambiosButton = document.getElementById('guardarCambios');
+    guardarCambiosButton.onclick = function() {
+        console.log('Cambios guardados!');
+    };
+
+    // Asegúrate de manejar el guardado de los cambios aquí,
+    // posiblemente enviando los datos actualizados a tu base de datos
+    
+});
+
+
 // Eventos para los botones de ordenación
 document.getElementById('sortByAgreementNumber').addEventListener('click', () => ordenarYMostrarUniversidades('NumeroConvenio', true));
 document.getElementById('sortByCountry').addEventListener('click', () => ordenarYMostrarUniversidades('Pais'));
@@ -130,8 +292,6 @@ document.getElementById('sortByGrade').addEventListener('click', () => ordenarYM
 document.getElementById('sortByLanguage').addEventListener('click', () => ordenarYMostrarUniversidades('IdiomaImparticion'));
 document.getElementById('sortByPlaces').addEventListener('click', () => ordenarYMostrarUniversidades('Plazas', true));
 document.getElementById('sortByDuration').addEventListener('click', () => ordenarYMostrarUniversidades('DuracionMeses', true));
-
-
 
 // Ejecuta la carga de universidades al cargar la página
 
