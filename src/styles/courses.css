@@ -1,0 +1,134 @@
+/* Restablecer estilos predeterminados */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #ffffff; /* Azul oscuro para el encabezado total */
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #5d799c; /* Azul más claro para la barra superior */
+}
+
+.logo-box {
+    /* Ajusta estos estilos según el tamaño de tu logo */
+}
+
+.logo {
+    height: 50px; /* Ajusta la altura del logo */
+    width: auto; /* Para mantener la proporción */
+}
+
+.user-box {
+    margin-right: 10px; /* Añade margen a la derecha si es necesario */
+}
+
+.user-button {
+    padding: 10px 20px;
+    background-color: #003366; /* Azul aún más oscuro para el botón del usuario */
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: #0f3a6f; /* Azul oscuro para la barra de navegación */
+    padding: 10px 0; /* Añade un relleno vertical */
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin: 0 80px;
+    display: inline-block;
+}
+
+.navbar a:hover {
+    background-color: #002244; /* Azul más oscuro para el hover */
+    transition: background-color 0.3s;
+}
+
+
+
+/* Resto del CSS */
+
+.input_ram {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
+    gap: 20px; /* Espacio entre las columnas y filas */
+    margin-top: 20px; /* Añade espacio arriba de los inputs */
+    max-width: 800px; /* O el ancho máximo que prefieras para tus inputs */
+    margin-left: auto; /* Centra el contenedor hacia la derecha */
+    margin-right: auto; /* Centra el contenedor hacia la izquierda */
+    padding: 0 20px; /* Añade un poco de espacio en los lados */
+  }
+  
+  
+  .input-group {
+    margin-bottom: 10px; /* Añade espacio entre los grupos de inputs */
+  }
+  
+  .input-group label {
+    display: block; /* Asegura que la etiqueta esté en su propia línea */
+    margin-bottom: 5px; /* Espacio entre la etiqueta y el input */
+  }
+  
+  .input-group input {
+    width: 100%; /* Ocupa el 100% del ancho del grupo de input */
+    padding: 10px;
+    border: 1px solid #ccc; /* Borde ligero para los inputs */
+    border-radius: 5px; /* Bordes redondeados para los inputs */
+  }
+  
+
+  .convalidaciones-container {
+    max-width: 800px;
+    margin: 20px auto; /* Centra el contenedor y añade espacio arriba y abajo */
+    padding: 0 15px; /* Espacio a los lados dentro del contenedor */
+  }
+  
+  .select-container {
+    margin-bottom: 10px; /* Espacio entre los selects */
+  }
+  
+  .select-row {
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos a lo ancho del contenedor */
+    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea si no hay espacio */
+  }
+  
+  .select-style {
+    width: 100%; /* Permite que el select ocupe todo el ancho del contenedor */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Espacio entre los selects cuando están en columna */
+  }
+  
+  .select-row .select-container {
+    width: 48%; /* Ancho para dos columnas, ajusta según necesites */
+  }
+  
+  @media (max-width: 600px) { /* Para pantallas pequeñas */
+    .select-row .select-container {
+      width: 100%; /* Los selects ocupan toda la fila en pantallas pequeñas */
+    }
+  }
+  
+  /* Puedes añadir más estilos como hover, focus, etc. según necesites */
+  
