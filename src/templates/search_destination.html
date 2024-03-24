@@ -1,35 +1,48 @@
-<form id="searchForm">
-    <div>
-        <label for="grade">Grado:</label>
-        <select id="grade" name="grade">
-            <option value="" selected disabled>Seleccione un grado</option>
-        </select>
-    </div>
-    
-    <!-- Repite para los otros selects -->
-    
-    <div>
-        <label for="university">Universidad:</label>
-        <select id="university" name="university">
-            <option value="" selected disabled>Seleccione una universidad</option>
-        </select>
-    </div>
-    
-    <div>
-        <label for="country">País:</label>
-        <select id="country" name="country">
-            <option value="" selected disabled>Seleccione un país</option>
-        </select>
-    </div>
-    
-    <div>
-        <label for="city">Ciudad:</label>
-        <select id="city" name="city">
-            <option value="" selected disabled>Seleccione una ciudad</option>
-        </select>
-    </div>
-    
-    <button type="button" id="confirmButton">Confirmar</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Universidades</title>
+    <link rel="stylesheet" href="../styles/search_destination.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <h1>Buscar Universidades</h1>
+
+    <form id="searchForm">
+        <div>
+            <label for="grade">Grado:</label>
+            <select id="grade" name="grade" autocomplete="off">
+                <!-- Cambiado a no deshabilitado para permitir la selección -->
+                <option value="" selected>Seleccione un grado</option>
+            </select>
+        </div>
+        
+        <div>
+            <label for="university">Universidad:</label>
+            <select id="university" name="university" autocomplete="off">
+                <option value="" selected>Seleccione una universidad</option>
+            </select>
+        </div>
+        
+        <div>
+            <label for="country">País:</label>
+            <select id="country" name="country" autocomplete="off">
+                <option value="" selected>Seleccione un país</option>
+            </select>
+        </div>
+        
+        <div>
+            <label for="city">Ciudad:</label>
+            <select id="city" name="city" autocomplete="off">
+                <option value="" selected>Seleccione una ciudad</option>
+            </select>
+        </div>
+
+        <button type="button" id="confirmButton">Confirmar</button>
+    </form>
+</body>
 
 <script type="module" src="../scripts/search_destination.js"></script>
+</html>
