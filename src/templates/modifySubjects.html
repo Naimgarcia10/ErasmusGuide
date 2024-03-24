@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modify Subjects</title>
+  <link rel="stylesheet" href="../styles/main.css">
+  <link rel="stylesheet" href="../styles/modifySubjects.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Modify Subjects</h1>
+    <div id="subject-item">
+        <form class="form-group">
+            <div class="form-item">
+                <label class="txt-item" for="subject">Name of the subject:</label>
+                <input class="txt-lbl" type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="idSubjectRemove">ID of the subject:</label>
+                <input class="txt-lbl" type="text" id="idSubjectRemove" name="idSubjectRemove" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="credits">ECTS:</label>
+                <input class="txt-lbl" type="number" id="credits" name="credits" required>
+            </div>
+        </form>
+        <button class="btn-modify" id="btn-create" type="submit">Add</button>
+        <div class="form-group">
+            <div class="form-item">
+                <label class="txt-item" for="idSubjectRemove">ID of the subject:</label>
+                <input class="txt-lbl" type="text" id="idSubjectRemove" name="idSubjectRemove" required>
+            </div>
+        </div>
+        <button class="btn-modify" id="btn-remove" type="submit">Remove</button>
+        <!-- <div class="form-group"></div> -->
+  </div>
+  <script src="modifySubjects.html"></script>
+</body>
+</html>
