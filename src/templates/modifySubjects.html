@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,30 +11,73 @@
   <div class="container">
     <h1>Modify Subjects</h1>
     <div id="subject-item">
-        <form class="form-group">
+        <form class="form-group" id="form-create">
             <div class="form-item">
-                <label class="txt-item" for="subject">Name of the subject:</label>
-                <input class="txt-lbl" type="text" id="subject" name="subject" required>
+                <label class="txt-item" for="grade">Name of the destination grade:</label>
+                <input class="txt-lbl" type="text" id="grade" name="grade" required>
             </div>
             <div class="form-item">
-                <label class="txt-item" for="idSubjectRemove">ID of the subject:</label>
-                <input class="txt-lbl" type="text" id="idSubjectRemove" name="idSubjectRemove" required>
+                <label class="txt-item" for="country">Name of the destination country:</label>
+                <input class="txt-lbl" type="text" id="country" name="country" required>
             </div>
             <div class="form-item">
-                <label class="txt-item" for="credits">ECTS:</label>
-                <input class="txt-lbl" type="number" id="credits" name="credits" required>
+                <label class="txt-item" for="city">Name of the destination city:</label>
+                <input class="txt-lbl" type="text" id="city" name="city" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="university">Name of the destination University:</label>
+                <input class="txt-lbl" type="text" id="university" name="university" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="origin_subject">Name of the origin subject:</label>
+                <input class="txt-lbl" type="text" id="origin_subject" name="origin_subject" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="id_origin_subject">ID of the origin subject:</label>
+                <input class="txt-lbl" type="text" id="id_origin_subject" name="id_origin_subject" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="origin_credits">ECTS of the origin subject:</label>
+                <input class="txt-lbl" type="number" id="origin_credits" name="origin_credits" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="destination_subject">Name of the destination subject:</label>
+                <input class="txt-lbl" type="text" id="destination_subject" name="destination_subject" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="id_destination_subject">ID of the destination subject:</label>
+                <input class="txt-lbl" type="text" id="id_destination_subject" name="id_destination_subject" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="destination_credits">ECTS of the destination subject:</label>
+                <input class="txt-lbl" type="number" id="destination_credits" name="destination_credits" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="semester">Semester of the destination subject:</label>
+                <input class="txt-lbl" type="text" id="semester" name="semester" required>
+            </div>
+            <div class="form-item">
+                <label class="txt-item" for="id_pair">ID of the pair of subjects:</label>
+                <input class="txt-lbl" type="text" id="id_pair" name="id_pair" required>
             </div>
         </form>
-        <button class="btn-modify" id="btn-create" type="submit">Add</button>
-        <div class="form-group">
+        <button class="btn-modify" id="btn-create" type="submit">Add subject</button>
+        <form class="form-group"  id="form-remove-convalidation">
             <div class="form-item">
-                <label class="txt-item" for="idSubjectRemove">ID of the subject:</label>
-                <input class="txt-lbl" type="text" id="idSubjectRemove" name="idSubjectRemove" required>
+                <label class="txt-item" for="id_pair_remove">ID of the pair of subjects:</label>
+                <input class="txt-lbl" type="text" id="id_pair_remove" name="id_pair_remove" required>
             </div>
-        </div>
-        <button class="btn-modify" id="btn-remove" type="submit">Remove</button>
+        </form>
+        <button class="btn-modify" id="btn-remove-convalidation" type="submit">Remove convalidation</button>
+        <form class="form-group"  id="form-remove-subject">
+            <div class="form-item">
+                <label class="txt-item" for="id_subject_remove">ID of the pair of subjects:</label>
+                <input class="txt-lbl" type="text" id="id_subject_remove" name="id_subject_remove" required>
+            </div>
+        </form>
+        <button class="btn-modify" id="btn-remove-subject" type="submit">Remove subject</button>
         <!-- <div class="form-group"></div> -->
   </div>
-  <script src="modifySubjects.html"></script>
+  <script src="../scripts/modifySubjects.js"></script>
 </body>
 </html>
