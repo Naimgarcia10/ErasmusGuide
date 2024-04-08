@@ -1,6 +1,6 @@
 // Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 let destinosData;
 let universidadesFiltradas = {};
@@ -8,72 +8,63 @@ let esCoordinador = true;
 
 
 // Inicializa Firebase
-const { app, db } = initializeFirebase();
+const {db } = initializeFirebase();
 
 // Referencia al documento específico de donde se obtendrán los datos
 const destinosRef = doc(db, 'destinos', 'Universidades');
 
 // Función para crear la tarjeta de una universidad
-function crearTarjetaUniversidad(universityName, universityData) {
+function crearTarjetaUniversidad(universityName, universityData, esCoordinador) {
+    const cardContainer = document.createElement('div');
+    cardContainer.className = 'card-container';
+
     const card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'card-inner';
 
-    const title = document.createElement('h3');
-    title.textContent = universityName;
-    card.appendChild(title);
+    const cardFront = document.createElement('div');
+    cardFront.className = 'card-front';
+    cardFront.innerHTML = `
+        <p>${universityData.NumeroConvenio}</p>
+        <h3>${universityName}</h3>
+        <p>País: ${universityData.Pais}</p>
+        <p>Ciudad: ${universityData.Ciudad}</p>
+    `;
 
-    // Agrega más información de la universidad aquí
-    const infoPais = document.createElement('p');
-    infoPais.textContent = `País: ${universityData.Pais}`;
-    card.appendChild(infoPais);
+    const cardBack = document.createElement('div');
+    cardBack.className = 'card-back';
+    cardBack.innerHTML = `
+        <p>Idioma de impartición: ${universityData.IdiomaImparticion}</p>
+        <p>Estudios Ofrecidos: ${universityData.Estudios}</p>
+        <p>Duración: ${universityData.DuracionMeses} meses</p>
+        <p>Plazas: ${universityData.Plazas}</p>
+        <p>Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}</p>
+    `;
 
-    // Repite para otros datos relevantes de la universidad
-    const infoCiudad = document.createElement('p');
-    infoCiudad.textContent = `Ciudad: ${universityData.Ciudad}`;
-    card.appendChild(infoCiudad);
+    card.appendChild(cardFront);
+    card.appendChild(cardBack);
+    cardContainer.appendChild(card);
 
-    const infoNumeroConvenio = document.createElement('p');
-    infoNumeroConvenio.textContent = `Número de convenio: ${universityData.NumeroConvenio}`;
-    card.appendChild(infoNumeroConvenio);
 
-    const infoIdiomaImparticion = document.createElement('p');
-    infoIdiomaImparticion.textContent = `Idioma de impartición: ${universityData.IdiomaImparticion}`;
-    card.appendChild(infoIdiomaImparticion);
-
-    const infoEstudios = document.createElement('p');
-    infoEstudios.textContent = `Estudios Ofrecidos: ${universityData.Estudios}`;
-    card.appendChild(infoEstudios);
-
-    const infoDuracionMeses = document.createElement('p');
-    infoDuracionMeses.textContent = `Duración: ${universityData.DuracionMeses} meses`;
-    card.appendChild(infoDuracionMeses);
-
-    const infoPlazas = document.createElement('p');
-    infoPlazas.textContent = `Plazas: ${universityData.Plazas}`;
-    card.appendChild(infoPlazas);
-
-    const infoTitulacionesDisponibles = document.createElement('p');
-    infoTitulacionesDisponibles.textContent = `Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}`;
-    card.appendChild(infoTitulacionesDisponibles);
-
-    if (esCoordinador) {
         const iconoEditar = new Image();
         iconoEditar.src = '../media/lapiz.png';
         iconoEditar.addEventListener('click', () => abrirDialogoEditar(universityName, universityData));
-        card.appendChild(iconoEditar);
+        iconoEditar.setAttribute('class', 'iconoEditar');
+        cardBack.appendChild(iconoEditar);
 
         const iconoEliminar = new Image();
         iconoEliminar.src = '../media/papelera.png';
         iconoEliminar.addEventListener('click', () => eliminarUniversidad(universityName));
-        card.appendChild(iconoEliminar);
+        iconoEliminar.setAttribute('class', 'iconoEliminar');
+        cardBack.appendChild(iconoEliminar);
 
         const añadirUniversidadButton = document.getElementById('añadirUniversidad');
         añadirUniversidadButton.style.display = 'block';
+    
 
 
-    }
-    return card;
+    return cardContainer;
 }
+
 
 async function cargarUniversidadesFiltradas(grade, university, country, city) {
     const destinosSnap = await getDoc(destinosRef);
@@ -178,7 +169,7 @@ function abrirDialogoEditar(universityName, universityData) {
         <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
         <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles" value="${universityData.TitulacionesDisponibles.join(', ')}"><br>
 
-        <button id="guardarCambios">Guardar cambios</button>
+        <button id="guardarCambiosButton">Guardar cambios</button>
 
     `;
 
@@ -193,30 +184,66 @@ function abrirDialogoEditar(universityName, universityData) {
     };
 
     // Añadir funcionalidad para guardar los cambios
-    const guardarCambiosButton = document.getElementById('guardarCambios');
-    guardarCambiosButton.onclick = function() {
-        console.log('Cambios guardados!');
-    };
+    guardarCambiosButton.onclick = async function() {
+        // Obtener los valores del formulario
+        const updatedData = {
+            Pais: document.getElementById('pais').value,
+            Ciudad: document.getElementById('ciudad').value,
+            NumeroConvenio: document.getElementById('numeroConvenio').value,
+            IdiomaImparticion: document.getElementById('idiomaImparticion').value,
+            Estudios: document.getElementById('estudios').value,
+            DuracionMeses: document.getElementById('duracionMeses').value,
+            Plazas: document.getElementById('plazas').value,
+            TitulacionesDisponibles: document.getElementById('titulacionesDisponibles').value.split(',').map(titulacion => titulacion.trim()),
+        };
+        console.log("universityName", universityName);
+        // Asegúrate de que la referencia a la universidad es correcta
+        const universityRef = doc(db, 'Universidades', universityName);
+        console.log(universityRef.Pais);
 
-    // Asegúrate de manejar el guardado de los cambios aquí,
-    // posiblemente enviando los datos actualizados a tu base de datos
+        /*try {
+            await updateDoc(universityRef, updatedData);
+            console.log('Cambios guardados con éxito!');
+            modal.style.display = "none"; // Cierra el modal después de guardar
+            modalContent.removeChild(formContainer); // Limpia el formulario
+            // Aquí puedes también refrescar los datos mostrados en la página o confirmar al usuario que los datos fueron actualizados
+        } catch (error) {
+            console.error("Error al guardar los cambios: ", error);
+            // Manejar el error (p.ej., mostrar un mensaje al usuario)
+        }*/
+    };
+    
+
 }
+
+
+
+
 
 function eliminarUniversidad(universityName) {
     // Mensaje de confirmación antes de proceder a eliminar
     const confirmar = confirm(`Se va a borrar el destino: Universidad de ${universityName}, ¿está seguro?`);
     
     if (confirmar) {
-        // Aquí va la lógica para eliminar la universidad de la base de datos
-        console.log(`Eliminando la universidad: ${universityName}`);
-        // Por ejemplo: eliminarUniversidadDeLaBaseDeDatos(universityName);
+        // Referencia al documento de la universidad que se desea eliminar
+        const universityRef = doc(db,'Universidades', universityName);
         
-        // Después de eliminar, podrías refrescar la lista de universidades mostradas o mostrar un mensaje de éxito.
+        // Eliminar el documento
+        deleteDoc(universityRef)
+            .then(() => {
+                console.log(`Universidad ${universityName} eliminada con éxito.`);
+                // Aquí podrías refrescar la lista de universidades mostradas o mostrar un mensaje de éxito.
+            })
+            .catch((error) => {
+                console.error("Error al eliminar la universidad: ", error);
+                // Manejar el error, por ejemplo, mostrando un mensaje al usuario.
+            });
     } else {
         // Si el usuario cancela, simplemente cerramos el diálogo sin hacer nada
         console.log("Operación cancelada");
     }
 }
+
 
 
 // En tu JavaScript, similar a cómo manejas los otros iconos

@@ -4,34 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universidades Disponibles</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/available_destinations.css">
 </head>
 <body>
 
-    <div class="sort-bar">
-        <h3>Ordenar por:</h3>
-        <button id="sortByAgreementNumber">Numero de Convenio</button>
-        <button id="sortByCountry">País</button>
-        <button id="sortByCity">Ciudad</button>
-        <button id="sortByGrade">Titulacion</button>
-        <button id="sortByLanguage">Idioma de Imparticion</button>
-        <button id="sortByPlaces">Plazas</button>
-        <button id="sortByDuration">Duracion</button>
-    </div>
-
+<div class="sort-bar">
+    <h2>Ordenar por</h2>
+    <button id="sortByAgreementNumber">Numero de Convenio</button>
+    <button id="sortByCountry">País</button>
+    <button id="sortByCity">Ciudad</button>
+    <button id="sortByGrade">Titulacion</button>
+    <button id="sortByLanguage">Idioma de Imparticion</button>
+    <button id="sortByPlaces">Plazas</button>
+    <button id="sortByDuration">Duracion</button>
+</div>
 
 <div id="universitiesContainer" class="cards-container">
     <!-- Las tarjetas de universidades se generan aquí dinámicamente -->
-
-
 </div>
 
 <!-- Icono Plus para añadir una nueva universidad -->
-<img src="../media/plus.png" id="añadirUniversidad" />
-
-
-
+<img src="../media/plus.png" id="añadirUniversidad" alt="Añadir Universidad" />
 
 <!-- Modal Editar Universidad -->
 <div id="modalEditar" class="modal">
@@ -41,8 +35,6 @@
         <!-- El formulario se genera dinámicamente -->
     </div>
 </div>
-
-
 
 <script type="module" src="../scripts/available_destinations.js"></script>
 </body>
