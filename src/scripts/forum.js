@@ -13,14 +13,15 @@ import {
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
 
-async function addDiscussion(title, topic, city, body) {
-  if (title.trim() === "") {
-    console.error("El título no puede estar vacío");
+async function addDiscussion(name, title, topic, city, body) {
+  if (title.trim() === "" || name.trim() === "") {
+    console.error("El título y el nombre no pueden estar vacíos");
     return;
   }
 
   try {
     const docRef = await addDoc(collection(db, "forum"), {
+      name: name, // Agrega el nombre aquí
       title: title,
       createdAt: new Date(),
       thematic: topic,
@@ -28,13 +29,13 @@ async function addDiscussion(title, topic, city, body) {
       description: body
     });
     console.log("Discusión creada con éxito: ", docRef.id);
-    
-    // Actualiza la lista de discusiones tras añadir la nueva
+
     await showDiscussions();
   } catch (error) {
     console.error("Error al crear la discusión: ", error);
   }
 }
+
 
 
 
@@ -57,29 +58,20 @@ async function showDiscussions() {
       const titleSpan = document.createElement('span');
       titleSpan.textContent = discussionTitle;
 
+      // Contenedor para detalles que se añadirá aquí, pero inicialmente estará oculto
+      const detailsContainer = document.createElement('div');
+      detailsContainer.id = `details-${discussionId}`;
+      detailsContainer.style.display = 'none'; // Oculto por defecto
+
       // Botón para ver/ocultar respuestas
       const viewResponsesButton = document.createElement('button');
       viewResponsesButton.textContent = 'Ver Respuestas';
-      viewResponsesButton.setAttribute('data-active', 'false'); // Control de visibilidad
-      viewResponsesButton.onclick = () => {
-        const isActive = viewResponsesButton.getAttribute('data-active') === 'true';
-        if (isActive) {
-          // Ocultar detalles si ya están mostrados
-          const detailsContainer = document.getElementById('discussionDetails');
-          detailsContainer.innerHTML = '';
-          viewResponsesButton.textContent = 'Ver Respuestas';
-          viewResponsesButton.setAttribute('data-active', 'false');
-        } else {
-          // Mostrar detalles si están ocultos
-          displayDiscussionDetails(discussionId);
-          viewResponsesButton.textContent = 'Ocultar Respuestas';
-          viewResponsesButton.setAttribute('data-active', 'true');
-        }
-      };
+      viewResponsesButton.onclick = () => toggleDetails(detailsContainer, discussionId);
 
       // Añade primero el título y luego el botón al elemento de lista
       discussionItem.appendChild(titleSpan);
       discussionItem.appendChild(viewResponsesButton);
+      discussionItem.appendChild(detailsContainer);
 
       // Añadir el elemento de lista al contenedor principal
       discussionsList.appendChild(discussionItem);
@@ -89,12 +81,24 @@ async function showDiscussions() {
   }
 }
 
+// Función para mostrar/ocultar detalles de la discusión
+function toggleDetails(detailsContainer, discussionId) {
+  const isHidden = detailsContainer.style.display === 'none';
+  if (isHidden) {
+    displayDiscussionDetails(discussionId, detailsContainer);
+    detailsContainer.style.display = 'block';
+  } else {
+    detailsContainer.style.display = 'none';
+    detailsContainer.innerHTML = ''; // Limpiar los detalles cuando se oculta
+  }
+}
+
+
 
 
 
 // Función para mostrar los detalles de la discusión
-async function displayDiscussionDetails(discussionId) {
-  const detailsContainer = document.getElementById('discussionDetails');
+async function displayDiscussionDetails(discussionId, detailsContainer) {
   detailsContainer.innerHTML = ''; // Limpiar el contenedor antes de añadir nueva información
 
   const docRef = doc(db, "forum", discussionId);
@@ -102,6 +106,11 @@ async function displayDiscussionDetails(discussionId) {
 
   if (docSnap.exists()) {
     const data = docSnap.data();
+
+    const nameElement = document.createElement('p');
+    nameElement.textContent = `Nombre: ${data.name || 'Anónimo'}`;
+    detailsContainer.appendChild(nameElement);
+
 
     // Ciudad
     const cityElement = document.createElement('p');
@@ -148,7 +157,7 @@ async function displayDiscussionDetails(discussionId) {
       if (responseText) {
         await addResponseToDatabase(discussionId, responseText);
         responseInput.value = ''; // Limpiar el campo de entrada
-        await displayDiscussionDetails(discussionId); // Recargar los detalles para incluir la nueva respuesta
+        await displayDiscussionDetails(discussionId, detailsContainer); // Recargar los detalles para incluir la nueva respuesta
       } else {
         alert('La respuesta no puede estar vacía.');
       }
@@ -156,7 +165,6 @@ async function displayDiscussionDetails(discussionId) {
 
     detailsContainer.appendChild(responseInput);
     detailsContainer.appendChild(submitResponseButton);
-
   } else {
     console.log("No se encontró la discusión.");
   }
@@ -188,27 +196,27 @@ async function addResponseToDatabase(discussionId, responseText) {
 document.getElementById('discussionForm').addEventListener('submit', (event) => {
   event.preventDefault();
   
-  // Obtén los valores de los inputs y selects
+  const nameInput = document.getElementById('discussionName'); // Captura el nombre
   const titleInput = document.getElementById('discussionTitle');
-  const bodyInput = document.getElementById('discussionBody'); // Captura la descripción
+  const bodyInput = document.getElementById('discussionBody');
   const topicSelect = document.getElementById('discussionTopic');
   const citiesSelect = document.getElementById('citiesSelect');
-  
-  // Almacena los valores en variables
+
+  const name = nameInput.value; // Almacena el valor del nombre
   const title = titleInput.value;
-  const body = bodyInput.value; // Almacena el valor de la descripción
+  const body = bodyInput.value;
   const topic = topicSelect.value;
   const city = citiesSelect.value;
   
-  // Llama a addDiscussion pasando la descripción como argumento
-  addDiscussion(title, topic, city, body); // Añade 'body' como un nuevo argumento
-  
-  // Limpia los campos del formulario
+  addDiscussion(name, title, topic, city, body);
+
+  nameInput.value = ""; // Limpia el input del nombre
   titleInput.value = "";
-  bodyInput.value = ""; // Limpia el input de la descripción
+  bodyInput.value = "";
   topicSelect.value = "dinero";
   citiesSelect.selectedIndex = 0;
 });
+
 
 
 
