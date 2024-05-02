@@ -136,10 +136,6 @@
     transform: scale(1.2); /* Escala el icono al pasar el mouse */
 }
 
-
-    background-color: var(--White);
-}
-
 .card h3 {
     margin-top: 0;
 }
