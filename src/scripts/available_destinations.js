@@ -39,6 +39,7 @@ function crearTarjetaUniversidad(universityName, universityData, esCoordinador) 
         <p>Duración: ${universityData.DuracionMeses} meses</p>
         <p>Plazas: ${universityData.Plazas}</p>
         <p>Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}</p>
+        <button id="VerOpinionesButton"> Ver Opiniones </button>
     `;
 
     card.appendChild(cardFront);
