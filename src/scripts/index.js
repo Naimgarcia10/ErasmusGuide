@@ -16,13 +16,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 //UNIVERSIDAD DE PARMA
 L.marker([44.800918087917225, 10.325879738603822]).addTo(mapa)
-.bindPopup('Nombre: Parma, \nCiudad: Parma').openPopup();
-
+.bindPopup("Nombre: Universidad de Parma<br>Ciudad: Parma<br>Estudios: Derecho<br>Idioma de imparticion: Italiano").openPopup();
 
 //UNIVERSIDAD AGH KRAKOW
 L.marker([50.06464067476525, 19.92336102727471]).addTo(mapa)
-.bindPopup('Nombre: AGH, \nCiudad: Cracovia').openPopup();
+.bindPopup("Nombre: Universidad AGH<br>Ciudad: Cracovia<br>Estudios: Informatica, Derecho<br>Idioma de imparticion: Ingles").openPopup();
 
-//UNIVERSIDAD DE PARIS
 L.marker([48.85884430000001, 2.2943506]).addTo(mapa)
-.bindPopup('Nombre: Paris, \nCiudad: Paris').openPopup();
+.bindPopup("Nombre: Universidad de Paris<br>Ciudad: Paris<br>Estudios: Arquitectura<br>Idioma de imparticion: Frances").openPopup();

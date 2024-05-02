@@ -9,9 +9,27 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <h3>Aqui va a estar un mapa con las universidades disponibles</h3>
+    <header>
+        <div class="top-bar">
+            <div class="logo-box">
+                <img src="logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="user-box">
+                <button class="user-button">User</button>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">INICIO</a>
+            <a href="forum.html">FORUM</a>
+            <a href="#destinos-populares">DESTINOS POPULARES</a>
+            <a href="#convalidaciones">CONVALIDACIONES</a>
+            <a href="search_destination.html">VER DESTINOS</a>
 
-    <div id="condi">
+        </nav>
+    </header>
+    <!-- Aquí va el resto del contenido de tu página -->
+
+    <div id="contenedorExterior">
         <div id="mapa" style="height: 400px;"></div>
     </div>
     

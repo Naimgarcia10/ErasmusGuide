@@ -21,10 +21,6 @@ header {
     background-color: #5d799c; /* Azul más claro para la barra superior */
 }
 
-.logo-box {
-    /* Ajusta estos estilos según el tamaño de tu logo */
-}
-
 .logo {
     height: 50px; /* Ajusta la altura del logo */
     width: auto; /* Para mantener la proporción */
