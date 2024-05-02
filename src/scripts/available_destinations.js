@@ -1,126 +1,309 @@
 // Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import {collection, doc, getDoc, updateDoc,setDoc, deleteDoc, getFirestore } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 let destinosData;
-let universidadesFiltradas = {};
+let universidadesFiltradas = [];
+let esCoordinador = true; 
 
 
 // Inicializa Firebase
-const { app, db } = initializeFirebase();
+const {db } = initializeFirebase();
 
-// Referencia al documento específico de donde se obtendrán los datos
-const destinosRef = doc(db, 'destinos', 'Universidades');
 
-// Función para crear la tarjeta de una universidad
-function crearTarjetaUniversidad(universityName, universityData) {
+/*########################################################################
+####FUNCION PARA AÑADIR LOS CAMPOS DE LAS UNIVERSIDADES A LA TARJETA #####
+##########################################################################*/
+
+function crearTarjetaUniversidad(universityName, universityData, esCoordinador) {
+    const cardContainer = document.createElement('div');
+    cardContainer.className = 'card-container';
+
     const card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'card-inner';
 
-    const title = document.createElement('h3');
-    title.textContent = universityName;
-    card.appendChild(title);
+    const cardFront = document.createElement('div');
+    cardFront.className = 'card-front';
+    cardFront.innerHTML = `
+        <p>${universityData.NumeroConvenio}</p>
+        <h3>${universityName}</h3>
+        <p>País: ${universityData.Pais}</p>
+        <p>Ciudad: ${universityData.Ciudad}</p>
+    `;
 
-    // Agrega más información de la universidad aquí
-    const infoPais = document.createElement('p');
-    infoPais.textContent = `País: ${universityData.Pais}`;
-    card.appendChild(infoPais);
+    const cardBack = document.createElement('div');
+    cardBack.className = 'card-back';
+    cardBack.innerHTML = `
+        <p>Idioma de impartición: ${universityData.IdiomaImparticion}</p>
+        <p>Estudios Ofrecidos: ${universityData.Estudios}</p>
+        <p>Duración: ${universityData.DuracionMeses} meses</p>
+        <p>Plazas: ${universityData.Plazas}</p>
+        <p>Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}</p>
+        <button id="VerOpinionesButton"> Ver Opiniones </button>
+    `;
 
-    // Repite para otros datos relevantes de la universidad
-    const infoCiudad = document.createElement('p');
-    infoCiudad.textContent = `Ciudad: ${universityData.Ciudad}`;
-    card.appendChild(infoCiudad);
-
-    const infoNumeroConvenio = document.createElement('p');
-    infoNumeroConvenio.textContent = `Número de convenio: ${universityData.NumeroConvenio}`;
-    card.appendChild(infoNumeroConvenio);
-
-    const infoIdiomaImparticion = document.createElement('p');
-    infoIdiomaImparticion.textContent = `Idioma de impartición: ${universityData.IdiomaImparticion}`;
-    card.appendChild(infoIdiomaImparticion);
-
-    const infoEstudios = document.createElement('p');
-    infoEstudios.textContent = `Estudios Ofrecidos: ${universityData.Estudios}`;
-    card.appendChild(infoEstudios);
-
-    const infoDuracionMeses = document.createElement('p');
-    infoDuracionMeses.textContent = `Duración: ${universityData.DuracionMeses} meses`;
-    card.appendChild(infoDuracionMeses);
-
-    const infoPlazas = document.createElement('p');
-    infoPlazas.textContent = `Plazas: ${universityData.Plazas}`;
-    card.appendChild(infoPlazas);
-
-    const infoTitulacionesDisponibles = document.createElement('p');
-    infoTitulacionesDisponibles.textContent = `Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(', ')}`;
-    card.appendChild(infoTitulacionesDisponibles);
+    card.appendChild(cardFront);
+    card.appendChild(cardBack);
+    cardContainer.appendChild(card);
 
 
+        const iconoEditar = new Image();
+        iconoEditar.src = '../media/lapiz.png';
+        iconoEditar.addEventListener('click', () => abrirDialogoEditar(universityName, universityData));
+        iconoEditar.setAttribute('class', 'iconoEditar');
+        cardBack.appendChild(iconoEditar);
 
-    return card;
+        const iconoEliminar = new Image();
+        iconoEliminar.src = '../media/papelera.png';
+        iconoEliminar.addEventListener('click', () => eliminarUniversidad(universityName));
+        iconoEliminar.setAttribute('class', 'iconoEliminar');
+        cardBack.appendChild(iconoEliminar);
+
+        const añadirUniversidadButton = document.getElementById('añadirUniversidad');
+        añadirUniversidadButton.style.display = 'block';
+    
+
+
+    return cardContainer;
 }
+
+/*############################################################################################################
+#####FUNCION PARA CARGAR LA INFORMACION DE LAS UNIVERSIDADES DESDE LA BASE DE DATOS Y APLICAR LOS FILTROS ####
+##############################################################################################################*/
+
 
 async function cargarUniversidadesFiltradas(grade, university, country, city) {
-    const destinosSnap = await getDoc(destinosRef);
+    // Lista de referencias de universidades
+    const universidadesRef = ['UniversidadAGH', 'UniversidadParma', 'UniversidadParis']; // Extiende esta lista según sea necesario
+    let universidades = [];
 
-    if (destinosSnap.exists()) {
-        destinosData = destinosSnap.data();
-        universidadesFiltradas = filtrarDestinos(destinosData, grade, university, country, city); // Actualiza universidadesFiltradas
-        mostrarUniversidades(universidadesFiltradas);
-    } else {
-        console.log("No se encontraron universidades!");
-    }
-}
+    for (const univRef of universidadesRef) {
+        const docRef = doc(db, 'destinos', univRef);
+        const docSnap = await getDoc(docRef);
 
-
-function filtrarDestinos(data, grade, university, country, city) {
-    return Object.entries(data).reduce((filtered, [universityName, universityData]) => {
-        if ((grade && !universityData.TitulacionesDisponibles.includes(grade)) ||
-            (university && universityName !== university) ||
-            (country && universityData.Pais !== country) ||
-            (city && universityData.Ciudad !== city)) {
-            return filtered;
+        if (docSnap.exists()) {
+            const universityData = docSnap.data();
+            universityData.universityName = univRef; // Guardar el nombre para usarlo más tarde
+            universidades.push(universityData);
         }
-        filtered[universityName] = universityData;
-        return filtered;
-    }, {});
+    }
+
+    // Filtrar los datos cargados
+    universidadesFiltradas = filtrarDestinos(universidades, grade, university, country, city);
+    mostrarUniversidades(universidadesFiltradas);
 }
+
+function filtrarDestinos(universidades, grade, university, country, city) {
+    return universidades.filter((univ) => {
+        return (!grade || (univ.TitulacionesDisponibles && univ.TitulacionesDisponibles.includes(grade))) &&
+               (!university || univ.universityName === university) &&
+               (!country || univ.Pais === country) &&
+               (!city || univ.Ciudad === city);
+    });
+}
+
+
+/*############################################################################################################
+##################FUNCION PARA MOSTRAR LAS TARJETAS ORDENADAS POR ALGUN CAMPO ################################
+##############################################################################################################*/
 
 function mostrarUniversidades(universidades) {
     const universitiesContainer = document.getElementById('universitiesContainer');
-    universitiesContainer.innerHTML = ''; // Limpia el contenedor
+    universitiesContainer.innerHTML = ''; // Limpia el contenedor antes de añadir nuevas tarjetas
 
-    for (const [universityName, universityData] of Object.entries(universidades)) {
-        const card = crearTarjetaUniversidad(universityName, universityData);
+    universidades.forEach((univData) => {
+        const card = crearTarjetaUniversidad(univData.universityName, univData);
         universitiesContainer.appendChild(card);
-    }
+    });
 }
 
+
 function ordenarYMostrarUniversidades(campo, esNumerico = false) {
-    // Asegúrate de usar universidadesFiltradas en lugar de destinosData
     const universidadesOrdenadas = ordenarUniversidades(campo, esNumerico, universidadesFiltradas);
     mostrarUniversidades(universidadesOrdenadas);
 }
 
 function ordenarUniversidades(campo, esNumerico = false, datosParaOrdenar) {
-    return Object.entries(datosParaOrdenar).sort((a, b) => {
-        let valA = a[1][campo] || (esNumerico ? "0" : "");
-        let valB = b[1][campo] || (esNumerico ? "0" : "");
+    return datosParaOrdenar.sort((a, b) => {
+        let valA = a[campo] || (esNumerico ? 0 : "");
+        let valB = b[campo] || (esNumerico ? 0 : "");
 
+        // Manejo especial para arrays (ejemplo: TitulacionesDisponibles)
         if (campo === 'TitulacionesDisponibles') {
-            valA = [...(valA || [])].sort()[0] || ""; 
+            valA = [...(valA || [])].sort()[0] || "";
             valB = [...(valB || [])].sort()[0] || "";
         }
 
+        // Comparar valores numéricos o strings
         if (esNumerico) {
             return Number(valA) - Number(valB);
         } else {
-            valA = valA || "";
-            valB = valB || "";
             return valA.localeCompare(valB);
         }
-    }).reduce((obj, [key, val]) => ({ ...obj, [key]: val }), {});
+    });
 }
+
+
+/*##################################################################
+################### FUNCIONES PARA EL COORDINADOR ##################
+##################################################################*/
+
+function abrirDialogoEditar(universityName, universityData) {
+    const modal = document.getElementById('modalEditar');
+    modal.style.display = "block";
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.innerHTML = '';  // Limpiar el contenido anterior
+
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+        <label for="nombreUniversidad">Nombre:</label>
+        <input type="text" id="nombreUniversidad" name="nombreUniversidad" value="${universityName}" disabled><br>
+        <label for="pais">País:</label>
+        <input type="text" id="pais" name="pais" value="${universityData.Pais}"><br>
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" value="${universityData.Ciudad}"><br>
+        <label for="numeroConvenio">Número de convenio:</label>
+        <input type="text" id="numeroConvenio" name="numeroConvenio" value="${universityData.NumeroConvenio}"><br>
+        <label for="idiomaImparticion">Idioma de impartición:</label>
+        <input type="text" id="idiomaImparticion" name="idiomaImparticion" value="${universityData.IdiomaImparticion}"><br>
+        <label for="estudios">Estudios Ofrecidos:</label>
+        <input type="text" id="estudios" name="estudios" value="${universityData.Estudios}"><br>
+        <label for="duracionMeses">Duración (meses):</label>
+        <input type="text" id="duracionMeses" name="duracionMeses" value="${universityData.DuracionMeses}"><br>
+        <label for="plazas">Plazas:</label>
+        <input type="text" id="plazas" name="plazas" value="${universityData.Plazas}"><br>
+        <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
+        <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles" value="${universityData.TitulacionesDisponibles.join(', ')}"><br>
+        <button id="guardarCambiosButton">Guardar cambios</button>
+    `;
+    modalContent.appendChild(formContainer);
+
+    const guardarCambiosButton = document.getElementById('guardarCambiosButton');
+    guardarCambiosButton.addEventListener('click', () => actualizarUniversidad(universityName));
+}
+
+async function actualizarUniversidad(universityName) {
+    const updatedData = {
+        Pais: document.getElementById('pais').value,
+        Ciudad: document.getElementById('ciudad').value,
+        NumeroConvenio: document.getElementById('numeroConvenio').value,
+        IdiomaImparticion: document.getElementById('idiomaImparticion').value,
+        Estudios: document.getElementById('estudios').value,
+        DuracionMeses: document.getElementById('duracionMeses').value,
+        Plazas: document.getElementById('plazas').value,
+        TitulacionesDisponibles: document.getElementById('titulacionesDisponibles').value.split(',').map(t => t.trim())
+    };
+
+    try {
+        const universityRef = doc(db, 'destinos', universityName);
+        await updateDoc(universityRef, updatedData);
+        console.log('Cambios guardados con éxito!');
+        document.getElementById('modalEditar').style.display = "none";  // Cierra el modal después de guardar
+    } catch (error) {
+        console.error("Error al guardar los cambios: ", error);
+    }
+}
+
+function eliminarUniversidad(universityName) {
+    const confirmar = confirm(`Se va a borrar el destino: Universidad de ${universityName}, ¿está seguro?`);
+    if (confirmar) {
+        const universityRef = doc(db, 'destinos', universityName);
+        deleteDoc(universityRef)
+            .then(() => {
+                console.log(`Universidad ${universityName} eliminada con éxito.`);
+            })
+            .catch((error) => {
+                console.error("Error al eliminar la universidad: ", error);
+            });
+    } else {
+        console.log("Operación cancelada");
+    }
+}
+
+
+
+
+document.getElementById('añadirUniversidad').addEventListener('click', () => {
+    const modal = document.getElementById('modalEditar');
+    modal.style.display = "block";
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.innerHTML = '';  // Limpiar el contenido anterior
+
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+        <label for="nombreUniversidad">Nombre:</label>
+        <input type="text" id="nombreUniversidad" name="nombreUniversidad"><br>
+
+        <label for="pais">País:</label>
+        <input type="text" id="pais" name="pais"><br>
+
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad"><br>
+
+        <label for="numeroConvenio">Número de convenio:</label>
+        <input type="text" id="numeroConvenio" name="numeroConvenio"><br>
+
+        <label for="idiomaImparticion">Idioma de impartición:</label>
+        <input type="text" id="idiomaImparticion" name="idiomaImparticion"><br>
+        
+        <label for="estudios">Estudios Ofrecidos:</label>
+        <input type="text" id="estudios" name="estudios"><br>
+
+        <label for="duracionMeses">Duración (meses):</label>
+        <input type="text" id="duracionMeses" name="duracionMeses"><br>
+
+        <label for="plazas">Plazas:</label>
+        <input type="text" id="plazas" name="plazas"><br>
+
+        <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
+        <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles"><br>
+
+        <button id="guardarCambiosNuevaUniversidad">Guardar nueva universidad</button>
+    `;
+    modalContent.appendChild(formContainer);
+
+    // Añadir funcionalidad para guardar la nueva universidad
+    document.getElementById('guardarCambiosNuevaUniversidad').addEventListener('click', crearNuevaUniversidad);
+});
+
+async function crearNuevaUniversidad() {
+    const db = getFirestore(); // Asegúrate de obtener la instancia de Firestore
+    const nombreUniversidad = document.getElementById('nombreUniversidad').value.trim();
+
+    const nuevaUniversidadData = {
+        Pais: document.getElementById('pais').value,
+        Ciudad: document.getElementById('ciudad').value,
+        NumeroConvenio: document.getElementById('numeroConvenio').value,
+        IdiomaImparticion: document.getElementById('idiomaImparticion').value,
+        Estudios: document.getElementById('estudios').value,
+        DuracionMeses: document.getElementById('duracionMeses').value,
+        Plazas: document.getElementById('plazas').value,
+        TitulacionesDisponibles: document.getElementById('titulacionesDisponibles').value.split(',').map(t => t.trim())
+    };
+
+    if (!nombreUniversidad) {
+        console.error("El nombre de la universidad es requerido");
+        return; // Detener la ejecución si no hay nombre
+    }
+
+    // Crear la referencia del documento usando el nombre de la universidad como ID
+    const universityRef = doc(db, "destinos", nombreUniversidad);
+
+    try {
+        await setDoc(universityRef, nuevaUniversidadData);
+        console.log('Nueva universidad añadida con éxito!');
+        document.getElementById('modalEditar').style.display = "none"; // Cierra el modal después de guardar
+    } catch (error) {
+        console.error("Error al añadir nueva universidad: ", error);
+    }
+}
+
+
+
+
+/*##################################################################
+############################ EVENTOS ###############################
+##################################################################*/
 
 // Eventos para los botones de ordenación
 document.getElementById('sortByAgreementNumber').addEventListener('click', () => ordenarYMostrarUniversidades('NumeroConvenio', true));
@@ -130,8 +313,6 @@ document.getElementById('sortByGrade').addEventListener('click', () => ordenarYM
 document.getElementById('sortByLanguage').addEventListener('click', () => ordenarYMostrarUniversidades('IdiomaImparticion'));
 document.getElementById('sortByPlaces').addEventListener('click', () => ordenarYMostrarUniversidades('Plazas', true));
 document.getElementById('sortByDuration').addEventListener('click', () => ordenarYMostrarUniversidades('DuracionMeses', true));
-
-
 
 // Ejecuta la carga de universidades al cargar la página
 
