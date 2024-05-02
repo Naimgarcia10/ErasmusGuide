@@ -1,0 +1,18 @@
+#condi{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#mapa {
+    width: 50%;
+    height: 100%;
+}
+
+body{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
