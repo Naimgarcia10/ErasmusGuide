@@ -63,6 +63,20 @@ header {
     transition: background-color 0.3s;
 }
 
+/* #ram-btn {
+    background-color: #003366; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+} */
+
+#ram-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 
 /* Resto del CSS */
