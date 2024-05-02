@@ -25,30 +25,23 @@
         </nav>
     </header>
 
-
-
-
-
-    
-
-    
-   
-
-
-    <ul id="discussionsList"></ul>
-    <div id="discussionDetails"></div>
-
-
-
     <div class="header-container">
         <h1>Crear Nueva Discusión</h1>
         <button id="showFormButton">Crear Nueva Discusión</button>
     </div>
 
+    <ul id="discussionsList"></ul>
+    <div id="discussionDetails"></div>
+
     <div id="discussionFormContainer" style="display: none;">
         <form id="discussionForm">
+            <!-- Input para el nombre del usuario -->
+            <input type="text" id="discussionName" placeholder="Nombre del creador">
+            
+            <!-- Input para el título de la discusión -->
             <input type="text" id="discussionTitle" placeholder="Título de la discusión">
             
+            <!-- Select para la temática de la discusión -->
             <select id="discussionTopic">
                 <option value="dinero">Dinero</option>
                 <option value="convalidaciones">Convalidaciones</option>
@@ -62,13 +55,10 @@
             <!-- Input para la descripción de la discusión -->
             <input type="text" id="discussionBody" placeholder="Descripción de la discusión">
             
+            <!-- Botón para crear la discusión -->
             <button type="submit">Crear discusión</button>
         </form>
     </div>
-      
-
-
-
     
     <!-- Enlace a tu archivo JavaScript -->
     <script type="module" src="../scripts/forum.js"></script>
