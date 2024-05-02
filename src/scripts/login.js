@@ -1,5 +1,6 @@
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import {signInWithEmailAndPassword, getAuth} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import {signInWithEmailAndPassword, getAuth, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"; 
+import { isCoordinator } from "./usersManagement.js";
 
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
@@ -14,6 +15,12 @@ loginForm.addEventListener('submit', async (e) => {
   loginUser();
 });
 
+const reset_password = document.getElementById('reset-password');
+reset_password.addEventListener('click', async (e) => {
+    e.preventDefault();
+    loginUser(); 
+});
+
 async function loginUser(){
     const email = loginForm['email'].value;
     const password = loginForm['password'].value;
@@ -25,6 +32,7 @@ async function loginUser(){
         loginForm.reset();
         temporaryMessage.textContent = 'Inicio de sesión exitoso';
         sessionStorage.setItem('user', JSON.stringify(userCredential.user));
+        isCoordinator(email);
         setTimeout(function() {
         temporaryMessage.textContent = '';
         location.href = 'search_destination.html';
@@ -44,3 +52,40 @@ async function loginUser(){
             }
     });
     }
+
+    async function logoutUser(){
+        auth.signOut().then(() => {
+            sessionStorage.removeItem('user');
+            location.href = 'index.html';
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    async function resetPassword(){
+        /*const email = loginForm['email'].value;
+        const temporaryMessage = document.getElementById('temporary-message-login');
+
+        if (email === '') {
+            temporaryMessage.textContent = 'Por favor, ingrese su correo electrónico';
+            return;
+        }
+
+        sendPasswordResetEmail(auth, email).then(() => {
+            temporaryMessage.textContent = 'Correo de restablecimiento de contraseña enviado';
+            setTimeout(function() {
+                temporaryMessage.textContent = '';
+                }, 5000);
+        }).catch((error) => {
+            const errorCode = error.code;
+            if (errorCode === 'auth/user-not-found') {
+                temporaryMessage.textContent = 'El usuario no existe';
+            } else if (errorCode === 'auth/invalid-email') {
+                temporaryMessage.textContent = 'El correo no es válido';
+            } else {
+                temporaryMessage.textContent = error.message;
+            }
+        });*/
+    }
+
+

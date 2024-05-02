@@ -1,0 +1,89 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+    color: #0F3A6F;
+    text-align: center;
+}
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--White);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+.subject-item {
+margin-bottom: 10px;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.subject-item:hover {
+background-color: #f0f0f0;
+cursor: pointer;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 20px;
+    padding-bottom: 1px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    background-color: #fff6ef;
+    margin: 5px;
+    /*div.form-group en el centro*/
+    margin: 0 auto;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+
+}
+
+
+.form-item {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    text-align: left;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+/*todos los inputs a la izquierda*/
+div input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+div input {
+    margin-left: 50px;
+}
+
+.btn-modify {
+    background-color: #0F3A6F;
+    color: var(--White);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+/*un hover para el .btn-modify que se sombree*/
+.btn-modify:hover {
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.txt-item{
+    color: #FBA012;
+    /* en negrita el texto */
+    font-weight: bold;
+
+
+}
