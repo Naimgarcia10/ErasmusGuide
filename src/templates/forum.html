@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Discusión en el Foro</title>
+    <link rel="stylesheet" href="../styles/forum.css">
+</head>
+<body>
+
+    <header>
+        <div class="top-bar">
+            <div class="logo-box">
+                <img src="logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="user-box">
+                <button class="user-button">User</button>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">INICIO</a>
+            <a href="forum.html">FORUM</a>
+            <a href="#destinos-populares">DESTINOS POPULARES</a>
+            <a href="#convalidaciones">CONVALIDACIONES</a>
+            <a href="search_destination.html">VER DESTINOS</a>
+
+        </nav>
+    </header>
+    <!-- Aquí va el resto del contenido de tu página -->
+
+    <div class="header-container">
+        <h1>Crear Nueva Discusión</h1>
+        <button id="showFormButton">Crear Nueva Discusión</button>
+    </div>
+
+    <ul id="discussionsList"></ul>
+    <div id="discussionDetails"></div>
+
+    <div id="discussionFormContainer" style="display: none;">
+        <form id="discussionForm">
+            <!-- Input para el nombre del usuario -->
+            <input type="text" id="discussionName" placeholder="Nombre del creador">
+            
+            <!-- Input para el título de la discusión -->
+            <input type="text" id="discussionTitle" placeholder="Título de la discusión">
+            
+            <!-- Select para la temática de la discusión -->
+            <select id="discussionTopic">
+                <option value="dinero">Dinero</option>
+                <option value="convalidaciones">Convalidaciones</option>
+            </select>
+            
+            <!-- Select para las ciudades -->
+            <select id="citiesSelect">
+                <!-- Las opciones se llenarán dinámicamente con JavaScript -->
+            </select>
+            
+            <!-- Input para la descripción de la discusión -->
+            <input type="text" id="discussionBody" placeholder="Descripción de la discusión">
+            
+            <!-- Botón para crear la discusión -->
+            <button type="submit">Crear discusión</button>
+        </form>
+    </div>
+    
+    <!-- Enlace a tu archivo JavaScript -->
+    <script type="module" src="../scripts/forum.js"></script>
+</body>
+</html>
