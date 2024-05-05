@@ -1,130 +1,172 @@
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import { doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 // Inicializa Firebase
-const {db} = initializeFirebase();
+const { app, db } = initializeFirebase();
 
 // Obtén el formulario de crear asignatura
-const AddSubjectForm = document.getElementById('form-create');
+const AddSubjectForm = document.getElementById("form-create");
 
 // Manejar el evento submit del formulario
-document.getElementById('btn-create').addEventListener('click', async (e) => {
-  e.preventDefault(); 
+document.getElementById("btn-create").addEventListener("click", async (e) => {
+  e.preventDefault();
   await addSubject();
 });
 
-async function addSubject(){
-    const grade = AddSubjectForm['grade'].value;
-    const country = AddSubjectForm['country'].value;
-    const city = AddSubjectForm['city'].value;
-    const university = AddSubjectForm['university'].value;
+async function addSubject() {
+  const grade = AddSubjectForm["grade"].value;
+  const country = AddSubjectForm["country"].value;
+  const city = AddSubjectForm["city"].value;
+  const university = AddSubjectForm["university"].value;
 
-    const docId = doc(db, 'Grados', grade, country, city, university, 'Asignaturas');
+  // La ruta al documento que contiene las asignaturas
+  const gradosRef = doc(db, "asignaturas", "Grados"); // Referencia al documento que contiene los grados.
 
-    const newSubject = {
-    origin_subject : AddSubjectForm['origin_subject'].value,
-    id_origin_subject : AddSubjectForm['id_origin_subject'].value,
-    origin_credits : parseInt(AddSubjectForm['origin_credits'].value),
-    destination_subject : AddSubjectForm['destination_subject'].value,
-    id_destination_subject : AddSubjectForm['id_destination_subject'].value,
-    destination_credits : parseInt(AddSubjectForm['destination_credits'].value),
-    semester : AddSubjectForm['semester'].value,
-    id_pair : AddSubjectForm['id_pair'].value
-    };
-
-    const docRef = doc(db, 'Asignaturas', docId);
-    try{
-      await updateDoc(docRef, {
-        Asignaturas: arrayUnion(newSubject)
-      });
-      console.log('Subject added successfully');
-    } catch(error){
-      console.error('Error adding the subject:', error);
-    }
-}
-
-
-
-
-/*crea la asigantura
-function createSubject(grade, country, city, university,
-    origin_subject, id_origin_subject, origin_credits,
-    destination_subject, id_destination_subject, destination_credits,
-    semester, id_pair){
-    AddSubjectForm.reset();
-    // Obtener una referencia a la colección de asignaturas
-    const asignaturasRef = db.collection('asignaturas')
-    .doc(grade)
-    .collection(country)
-    .doc(city)
-    .collection(university)
-    .doc('Asignaturas');
-
-    // Crear un objeto con los datos de la asignatura
-    const subjectData = {
-    Nombre: origin_subject,
-    ConvalidacionErasmus: destination_subject,
-    code_origin: id_origin_subject,
-    code_destiny: id_destination_subject,
-    code_pair: id_pair,
-    ects_origin: origin_credits,
-    ects_destiny: destination_credits,
-    semester: semester
-    };
-
-    asignaturasRef.add(subjectData)
-    .then(docRef => {
-      console.log("Subject added successfully:", docRef.id);
-    })
-    .catch(error => {
-      console.error("Error adding the subject:", error);
-    });
-}*/
-
-
-
-
-async function removeAssignmentsByCode() {
-  const codeToRemove = document.getElementById('codeToRemove').value; // Asume que tienes un input con este ID.
-  const gradosRef = doc(document, 'asignaturas', 'Grados'); // Referencia al documento que contiene los grados.
+  const newSubject = {
+    Nombre: AddSubjectForm["origin_subject"].value,
+    ConvalidacionErasmus: AddSubjectForm["destination_subject"].value,
+    code_origin: AddSubjectForm["id_origin_subject"].value,
+    origin_credits: parseInt(AddSubjectForm["origin_credits"].value),
+    code_destiny: AddSubjectForm["id_destination_subject"].value,
+    destination_credits: parseInt(AddSubjectForm["destination_credits"].value),
+    semester: AddSubjectForm["semester"].value,
+    code_pair: AddSubjectForm["id_pair"].value,
+  };
 
   try {
-      const gradosSnap = await getDoc(gradosRef);
+    // Leer el documento existente
+    const gradosSnap = await getDoc(gradosRef);
 
-      if (gradosSnap.exists()) {
-          let data = gradosSnap.data(); // Obtiene los datos actuales.
+    if (gradosSnap.exists()) {
+      // Utiliza la función de Firebase para actualizar campos anidados
 
-          // Aquí necesitas definir cómo iterar sobre tus datos y filtrar las asignaturas.
-          // Este es un pseudocódigo que deberás ajustar según tu estructura exacta.
-          Object.keys(data).forEach(gradoKey => {
-              Object.keys(data[gradoKey]).forEach(paisKey => {
-                  Object.keys(data[gradoKey][paisKey]).forEach(ciudadKey => {
-                      Object.keys(data[gradoKey][paisKey][ciudadKey]).forEach(universidadKey => {
-                          let asignaturas = data[gradoKey][paisKey][ciudadKey][universidadKey].Asignaturas;
-                          let asignaturasFiltradas = asignaturas.filter(asignatura => 
-                              asignatura.code_origin !== codeToRemove && 
-                              asignatura.code_destiny !== codeToRemove
-                          );
-                          // Actualiza las asignaturas filtradas.
-                          data[gradoKey][paisKey][ciudadKey][universidadKey].Asignaturas = asignaturasFiltradas;
-                      });
-                  });
-              });
-          });
-
-          // Finalmente, actualiza el documento en Firestore con los datos filtrados.
-          await updateDoc(gradosRef, data);
-          console.log('Asignaturas actualizadas en Firestore.');
+      let gradosData = gradosSnap.data();
+      // Comprobar si el grado especificado existe
+      if (!(grade in gradosData)) {
+        // Si no existe, inicializar la estructura para ese grado
+        gradosData[grade] = {};
       }
+      if (!(country in gradosData[grade])) {
+        gradosData[grade][country] = {};
+      }
+      if (!(city in gradosData[grade][country])) {
+        gradosData[grade][country][city] = {};
+      }
+      if (!(university in gradosData[grade][country][city])) {
+        gradosData[grade][country][city][university] = { Asignaturas: [] };
+      } else if (
+        !Array.isArray(gradosData[grade][country][city][university].Asignaturas)
+      ) {
+        gradosData[grade][country][city][university].Asignaturas = [];
+      }
+
+      // Añade la nueva asignatura al array correspondiente
+      gradosData[grade][country][city][university].Asignaturas.push(newSubject);
+      // Actualiza el documento con el nuevo array de asignaturas
+      await updateDoc(gradosRef, gradosData); //updatedField
+      console.log("Subject added successfully");
+    } else {
+      console.error("No such document!");
+    }
   } catch (error) {
-      console.error("Error al intentar eliminar asignaturas por código:", error);
-  }
+    console.error("Error adding the subject:", error);
+  }
 }
 
-document.getElementById('removeButton').addEventListener('click', removeAssignmentsByCode);
+async function removeSubjectsByCode() {
+  const codeToRemove = document.getElementById("id_subject_remove").value; // Asume que tienes un input con este ID.
+  const gradosRef = doc(db, "asignaturas", "Grados"); // Referencia al documento que contiene los grados.
 
-/*<input type="text" id="codeToRemove" placeholder="Código de asignatura a eliminar">
-<button id="removeButton">Eliminar Asignaturas</button>*/ 
+  try {
+    const gradosSnap = await getDoc(gradosRef);
+    console.log("Grados:", gradosSnap.exists());
 
+    if (gradosSnap.exists()) {
+      let data = gradosSnap.data(); // Obtiene los datos actuales.
 
+      // Aquí necesitas definir cómo iterar sobre tus datos y filtrar las asignaturas.
+      // Este es un pseudocódigo que deberás ajustar según tu estructura exacta.
+      Object.keys(data).forEach((gradoKey) => {
+        Object.keys(data[gradoKey]).forEach((paisKey) => {
+          Object.keys(data[gradoKey][paisKey]).forEach((ciudadKey) => {
+            Object.keys(data[gradoKey][paisKey][ciudadKey]).forEach(
+              (universidadKey) => {
+                let asignaturas =
+                  data[gradoKey][paisKey][ciudadKey][universidadKey]
+                    .Asignaturas;
+                let asignaturasFiltradas = asignaturas.filter(
+                  (asignatura) =>
+                    asignatura.code_origin !== codeToRemove &&
+                    asignatura.code_destiny !== codeToRemove
+                );
+                // Actualiza las asignaturas filtradas.
+                data[gradoKey][paisKey][ciudadKey][universidadKey].Asignaturas =
+                  asignaturasFiltradas;
+              }
+            );
+          });
+        });
+      });
 
+      // Finalmente, actualiza el documento en Firestore con los datos filtrados.
+      await updateDoc(gradosRef, data);
+      console.log("Asignaturas actualizadas en Firestore.");
+    }
+  } catch (error) {
+    //   console.log('Grados:', gradosSnap.exists());
+    console.error("Error al intentar eliminar asignaturas por código:", error);
+  }
+}
 
+document
+  .getElementById("btn-remove-subject")
+  .addEventListener("click", removeSubjectsByCode);
+
+async function removeSubjectByIdPair() {
+  const idPairToRemove = document.getElementById("id_pair_remove").value; // Assuming you have an input with this ID.
+  const gradosRef = doc(db, "asignaturas", "Grados"); // Reference to the document that contains the degrees.
+
+  try {
+    const gradosSnap = await getDoc(gradosRef);
+    console.log("Grados:", gradosSnap.exists());
+
+    if (gradosSnap.exists()) {
+      let data = gradosSnap.data(); // Get the current data.
+
+      // Iterate over the data and filter the subjects.
+      Object.keys(data).forEach((gradoKey) => {
+        Object.keys(data[gradoKey]).forEach((paisKey) => {
+          Object.keys(data[gradoKey][paisKey]).forEach((ciudadKey) => {
+            Object.keys(data[gradoKey][paisKey][ciudadKey]).forEach(
+              (universidadKey) => {
+                let asignaturas =
+                  data[gradoKey][paisKey][ciudadKey][universidadKey]
+                    .Asignaturas;
+                let asignaturasFiltradas = asignaturas.filter(
+                  (asignatura) => asignatura.code_pair !== idPairToRemove
+                );
+                // Update the filtered subjects.
+                data[gradoKey][paisKey][ciudadKey][universidadKey].Asignaturas =
+                  asignaturasFiltradas;
+              }
+            );
+          });
+        });
+      });
+
+      // Finally, update the document in Firestore with the filtered data.
+      await updateDoc(gradosRef, data);
+      console.log("Subjects updated in Firestore.");
+    }
+  } catch (error) {
+    console.error("Error removing subjects by ID pair:", error);
+  }
+}
+
+document
+  .getElementById("btn-remove-convalidation")
+  .addEventListener("click", removeSubjectByIdPair);
