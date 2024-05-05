@@ -63,7 +63,7 @@ async function addSubject() {
       ) {
         gradosData[grade][country][city][university].Asignaturas = [];
       }
-
+      git;
       // Añade la nueva asignatura al array correspondiente
       gradosData[grade][country][city][university].Asignaturas.push(newSubject);
       // Actualiza el documento con el nuevo array de asignaturas

@@ -51,12 +51,12 @@ function crearTarjetaUniversidad(
         <p>Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(
           ", "
         )}</p>
-        <button id="VerOpinionesButton"> Ver Opiniones </button>
+        <button class="review-bttn" id="EscribirOpinionesButton-${universityName}"> Escribir Opinion </button>
     `;
   //Esperar a que el DOM se actualice
   setTimeout(() => {
     document
-      .getElementById(`VerOpinionesButton-${universityName}`)
+      .getElementById(`EscribirOpinionesButton-${universityName}`)
       .addEventListener("click", function () {
         abrirModalOpiniones(universityName);
       });
@@ -415,3 +415,106 @@ document.addEventListener("DOMContentLoaded", () => {
     cityFilter
   );
 });
+
+//parte de pablo
+
+function abrirModalOpiniones(universityName) {
+  const modal = document.getElementById("modalEditar");
+  modal.style.display = "block";
+  const modalContent = document.querySelector(".modal-content");
+  modalContent.innerHTML = ""; // Limpiar el contenido anterior
+
+  const formContainer = document.createElement("div");
+  formContainer.innerHTML = `
+    <!DOCTYPE html>
+    <html lang="es">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Escribir Reseña</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="stylesheet" href="../styles/writeReviews.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+      </head>
+      <body>
+        <div class="container">
+          <h2>Escribir Reseña de ${universityName}</h2>
+          <form action="/submit-review" method="post">
+            <label for="rating">Puntuación:</label>
+            <div class="rating">
+              <i class="bi bi-star-fill star"></i>
+              <i class="bi bi-star-fill star"></i>
+              <i class="bi bi-star-fill star"></i>
+              <i class="bi bi-star-fill star"></i>
+              <i class="bi bi-star-fill star"></i>
+            </div>
+
+            <label for="review">Reseña:</label>
+            <textarea id="review" name="review"></textarea>
+          </form>
+            <div class="review-bttn-box">
+              <button class="review-bttns" type="submit">Enviar Reseña</button>
+              <button class="review-bttns" id="closeModalButton">Cerrar</button>
+            </div>
+        </div>
+        <script src="../scripts/writeReviews.js"></script>
+      </body>
+    </html>
+  `;
+
+  modalContent.appendChild(formContainer);
+
+  // Manejo de eventos de las estrellas
+  const stars = formContainer.querySelectorAll(".star");
+  stars.forEach(function (star, index) {
+    star.addEventListener("click", function () {
+      for (let i = 0; i <= index; i++) {
+        stars[i].classList.add("checked");
+      }
+      for (let i = index + 1; i < stars.length; i++) {
+        stars[i].classList.remove("checked");
+      }
+    });
+  });
+
+  // Event listener para cerrar el modal al hacer clic en el botón "Cerrar"
+  const closeModalButton = document.getElementById("closeModalButton");
+  closeModalButton.addEventListener("click", function () {
+    modal.style.display = "none";
+  });
+
+  const submitReview = document.getElementById("submit-review");
+  submitReview.addEventListener("click", () =>
+    submitReviewFunction(universityName)
+  );
+}
+
+/*
+async function submitReviewFunction(universityName) {
+  const updatedData = {
+    Pais: document.getElementById("pais").value,
+    Ciudad: document.getElementById("ciudad").value,
+    NumeroConvenio: document.getElementById("numeroConvenio").value,
+    IdiomaImparticion: document.getElementById("idiomaImparticion").value,
+    Estudios: document.getElementById("estudios").value,
+    DuracionMeses: document.getElementById("duracionMeses").value,
+    Plazas: document.getElementById("plazas").value,
+    TitulacionesDisponibles: document
+      .getElementById("titulacionesDisponibles")
+      .value.split(",")
+      .map((t) => t.trim()),
+  };
+
+  try {
+    const universityRef = doc(db, "destinos", universityName);
+    await updateDoc(universityRef, updatedData);
+    console.log("Cambios guardados con éxito!");
+    document.getElementById("modalEditar").style.display = "none"; // Cierra el modal después de guardar
+  } catch (error) {
+    console.error("Error al guardar los cambios: ", error);
+  }
+}*/
+
+//_____________________________________
+
+//estrellas de reseña
