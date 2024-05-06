@@ -151,8 +151,8 @@ document.querySelector('.university-select').addEventListener('change', async (e
           const selectConvalidacionErasmus = document.getElementById(`convalidacionErasmus${i}`);
           
           // Añadir opción por defecto
-          selectAsignaturaEspaña.appendChild(new Option('Selecciona una asignatura', ''));
-          selectConvalidacionErasmus.appendChild(new Option('Selecciona la convalidación', ''));
+          selectAsignaturaEspaña.appendChild(new Option('Selecciona una Asignatura', ''));
+          selectConvalidacionErasmus.appendChild(new Option('Selecciona la Convalidación', ''));
           
           asignaturasData.forEach(asignatura => {
             // Llenar el select de asignatura en España

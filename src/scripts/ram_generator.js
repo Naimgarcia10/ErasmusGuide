@@ -33,20 +33,23 @@ ram_btn.addEventListener('click', async (e) => {
     const año = fecha.getFullYear();
     const fecha_actual = `${dia}/${mes}/${año}`;
 
-    const selectoresAsignaturaEspaña = [];
-    const selectoresConvalidacionErasmus = [];
+    var selectoresAsignaturaEspaña = [];
+    var selectoresConvalidacionErasmus = [];
+    var asignaturaEspañaSeleccionada, convalidacionErasmusSeleccionada;
 
     for (let i = 1; i <= 3; i++) {
         const asignaturaEspaña = document.getElementById(`asignaturaEspaña${i}`);
         const convalidacionErasmus = document.getElementById(`convalidacionErasmus${i}`);
 
-        const asignaturaEspañaSeleccionada = asignaturaEspaña.options[asignaturaEspaña.selectedIndex].text;
-        const convalidacionErasmusSeleccionada = convalidacionErasmus.options[convalidacionErasmus.selectedIndex].text;
+        asignaturaEspañaSeleccionada = asignaturaEspaña.options[asignaturaEspaña.selectedIndex].text;
+        convalidacionErasmusSeleccionada = convalidacionErasmus.options[convalidacionErasmus.selectedIndex].text;
 
         selectoresAsignaturaEspaña.push(asignaturaEspañaSeleccionada);
         selectoresConvalidacionErasmus.push(convalidacionErasmusSeleccionada);
     }
 
+    selectoresAsignaturaEspaña = selectoresAsignaturaEspaña.filter(item => item !== "Selecciona una Asignatura");
+    selectoresConvalidacionErasmus = selectoresConvalidacionErasmus.filter(item => item !== "Selecciona la Convalidación");
 
     const gradosRef = doc(db, 'asignaturas', 'Grados');
     const gradosSnap = await getDoc(gradosRef);
@@ -67,8 +70,8 @@ ram_btn.addEventListener('click', async (e) => {
         "[email_coord]": emailCoord,
         "[fecha]": fecha_actual,
         
-    };
-
+    };    
+    
     for (let i = 1; i <= selectoresAsignaturaEspaña.length; i++) {
         data[`[nombre_ulpgc_${i}]`] = selectoresAsignaturaEspaña[i - 1];
         data[`[cod_ulpgc_${i}]`] = String(gradosData[titulacion][pais][ciudad][universidad]["Asignaturas"][i - 1]["code_origin"]);
