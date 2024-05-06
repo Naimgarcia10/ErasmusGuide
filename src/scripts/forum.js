@@ -31,13 +31,18 @@ async function addDiscussion(name, title, topic, city, body) {
     console.log("Discusión creada con éxito: ", docRef.id);
 
     await showDiscussions();
+    closeDiscussionForm(); // Llamar a esta función para cerrar el formulario
   } catch (error) {
     console.error("Error al crear la discusión: ", error);
   }
 }
 
 
-
+function closeDiscussionForm() {
+  var formContainer = document.getElementById('discussionFormContainer');
+  formContainer.style.display = "none";
+  document.getElementById('showFormButton').textContent = "Crear Nueva Discusión"; // Restablecer el texto del botón
+}
 
 
 async function showDiscussions() {
@@ -66,7 +71,7 @@ async function showDiscussions() {
       // Botón para ver/ocultar respuestas
       const viewResponsesButton = document.createElement('button');
       viewResponsesButton.textContent = 'Ver Respuestas';
-      viewResponsesButton.onclick = () => toggleDetails(detailsContainer, discussionId);
+      viewResponsesButton.onclick = () => toggleDetails(detailsContainer, discussionId, viewResponsesButton);
 
       // Añade primero el título y luego el botón al elemento de lista
       discussionItem.appendChild(titleSpan);
@@ -81,17 +86,21 @@ async function showDiscussions() {
   }
 }
 
-// Función para mostrar/ocultar detalles de la discusión
-function toggleDetails(detailsContainer, discussionId) {
+
+// Función para mostrar/ocultar detalles de la discusión y ajustar el texto del botón
+function toggleDetails(detailsContainer, discussionId, button) {
   const isHidden = detailsContainer.style.display === 'none';
   if (isHidden) {
     displayDiscussionDetails(discussionId, detailsContainer);
     detailsContainer.style.display = 'block';
+    button.textContent = 'Cerrar Respuestas'; // Cambia el texto a Cerrar Respuestas
   } else {
     detailsContainer.style.display = 'none';
     detailsContainer.innerHTML = ''; // Limpiar los detalles cuando se oculta
+    button.textContent = 'Ver Respuestas'; // Cambia el texto a Ver Respuestas
   }
 }
+
 
 
 
