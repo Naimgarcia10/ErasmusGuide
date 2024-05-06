@@ -3,20 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/forms.css">
+    <link rel="stylesheet" href="../styles/header.css">
     <title>Login</title>
 </head>
 
+<header>
+    <div class="top-bar">
+        <div class="logo-box">
+            <img src="logo.png" alt="Logo" class="logo">
+        </div>
+        <div class="user-box">
+            <button class="user-button">User</button>
+        </div>
+    </div>
+    <nav class="navbar">
+        <a href="forum.html">FORUM</a>
+        <a href="#destinos-populares">DESTINOS POPULARES</a>
+        <a href="courses.html">CONVALIDACIONES</a>
+        <a href="available_destinations.html">VER DESTINOS</a>
+    </nav>
+</header>
+
 <body>
-    <h1>Login</h1>
-    <form id="login-form">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required>
-        <a href="register.html">Registrarse</a>
-        <a href="" id="reset-password">¿Olvidaste tu contraseña?</a>
-        <button type="submit">Iniciar Sesión</button>
-    </form>
-    <p id="temporary-message-login"></p>
+    <div id="title-container">
+        <h1 id="title">Iniciar Sesión</h1>
+    </div>
+    <div id="form-container">
+        <form id="login-form">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            <a href="register.html">Registrarse</a>
+            <a href="" id="reset-password">¿Olvidaste tu contraseña?</a>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        <p id="temporary-message-login"></p>
+    </div>
+</body>
     <script type="module" src="../scripts/login.js"></script>
 </html>
