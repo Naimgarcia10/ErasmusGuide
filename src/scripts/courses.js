@@ -126,6 +126,11 @@ document.querySelector('.university-select').addEventListener('change', async (e
   const citySelect = document.querySelector('.city-select');
   const selectedCity = citySelect.value;
 
+  sessionStorage.setItem('selectedUniversity', selectedUniversity);
+  sessionStorage.setItem('selectedGrado', selectedGrado);
+  sessionStorage.setItem('selectedCountry', selectedCountry);
+  sessionStorage.setItem('selectedCity', selectedCity);
+
   // Limpia los selects de asignaturas y convalidaciones antes de llenarlos
   for (let i = 1; i <= 3; i++) {  // Ajusta el 3 al número de selects que tengas
     document.getElementById(`asignaturaEspaña${i}`).innerHTML = '';

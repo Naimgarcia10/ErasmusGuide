@@ -457,7 +457,6 @@ function abrirModalOpiniones(universityName) {
               <button class="review-bttns" id="closeModalButton">Cerrar</button>
             </div>
         </div>
-        <script src="../scripts/writeReviews.js"></script>
       </body>
     </html>
   `;
