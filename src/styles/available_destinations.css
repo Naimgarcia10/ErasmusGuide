@@ -1,4 +1,3 @@
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -54,151 +53,220 @@ header {
   transition: background-color 0.3s;
 }
 
-
-
-
 /*#####################################################
 # Estilos para la página de destinos disponibles
 #####################################################
 */
 .card-container {
-    perspective: 1000px;
-    width: 300px; /* Ancho de la tarjeta */
-    height: 280px; /* Altura de la tarjeta */
-    margin: 20px;
-    display: inline-block;
-    position: relative;
-  }
-  
-  .card-inner {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    position: relative;
-    background-color: var(--P_DarkBlue);
-    color: var(--P_DarkYellow);
-  }
-  
-  .card-container:hover .card-inner {
-    transform: rotateY(180deg);
-  }
-  
-  .card-front, .card-back {
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    position: absolute;
-    top: 20px;
-    left: 0;
-    display: table-column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  .card-back {
-    transform: rotateY(180deg);
-  }
-  
+  perspective: 1000px;
+  width: 300px; /* Ancho de la tarjeta */
+  height: 280px; /* Altura de la tarjeta */
+  margin: 20px;
+  display: inline-block;
+  position: relative;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+  background-color: var(--P_DarkBlue);
+  color: var(--P_DarkYellow);
+}
+
+.card-container:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  display: table-column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
 #añadirUniversidad {
-    display: none;
+  display: none;
 }
 
 /* Estilo básico para el modal */
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed; /* Se mantiene en lugar */
-    z-index: 1; /* Se sitúa encima de todo */
-    left: 0;
-    top: 0;
-    width: 100%; /* Anchura completa */
-    height: 100%; /* Altura completa */
-    overflow: auto; /* Habilita el scroll si es necesario */
-    background-color: rgb(0,0,0); /* Color de fondo */
-    background-color: rgba(0,0,0,0.4); /* Color de fondo con opacidad */
+  display: none; /* Oculto por defecto */
+  position: fixed; /* Se mantiene en lugar */
+  z-index: 1; /* Se sitúa encima de todo */
+  left: 0;
+  top: 0;
+  width: 100%; /* Anchura completa */
+  height: 100%; /* Altura completa */
+  overflow: auto; /* Habilita el scroll si es necesario */
+  background-color: rgb(0, 0, 0); /* Color de fondo */
+  background-color: rgba(0, 0, 0, 0.4); /* Color de fondo con opacidad */
 }
 
 /* Contenido/Estilo del modal */
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% desde el top y centrado */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Puede ser más o menos, dependiendo del diseño */
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% desde el top y centrado */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Puede ser más o menos, dependiendo del diseño */
+  height: auto;
 }
 
 /* El botón cerrar */
 .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-
-
 .sort-bar {
-    text-align: center; /* Centra el contenido de la barra de ordenación */
-    margin-bottom: 20px; /* Espaciado debajo de la barra de ordenación */
-  }
-  
-  .sort-bar h3 {
-    margin-bottom: 10px; /* Espaciado debajo del título */
-  }
-  
-  .sort-bar button {
-    background-color: transparent; /* Fondo transparente */
-    border: none; /* Elimina el borde */
-    color: var(--P_DarkBlue); /* Color del texto */
-    padding: 10px 20px; /* Espaciado interno */
-    margin: 0 5px; /* Espaciado entre botones */
-    cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: background-color 0.3s, color 0.3s; /* Suaviza la transición de colores */
-  }
-  
-  .sort-bar button:hover {
-    background-color: var(--P_DarkYellow); /* Color de fondo al pasar el mouse */
-    color: white; /* Color del texto al pasar el mouse */
-  }
-  
-  .sort-bar button.active {
-    background-color: #5cb85c; /* Color de fondo para el botón activo */
-    color: white; /* Color del texto para el botón activo */
-  }
-  
+  text-align: center; /* Centra el contenido de la barra de ordenación */
+  margin-bottom: 20px; /* Espaciado debajo de la barra de ordenación */
+}
 
-  
-  .iconoEditar, .iconoEliminar {
-    position: absolute; /* Posicionamiento absoluto respecto a su contenedor relativo más cercano */
-    cursor: pointer; /* Cambia el cursor a mano para indicar acción */
-    width: 40px;
-    height: auto;
-    bottom: 255px;
-    
-  }
-  
-  .iconoEditar {
-    right: 40px; /* Ajusta para posicionar el icono de editar */
-  }
-  
-  .iconoEliminar {
-    right: 10px; /* Ajusta para posicionar el icono de eliminar */
-  }
-  
-.iconoEditar:hover, .iconoEliminar:hover {
-    transform: scale(1.2); /* Escala el icono al pasar el mouse */
+.sort-bar h3 {
+  margin-bottom: 10px; /* Espaciado debajo del título */
+}
+
+.sort-bar button {
+  background-color: transparent; /* Fondo transparente */
+  border: none; /* Elimina el borde */
+  color: var(--P_DarkBlue); /* Color del texto */
+  padding: 10px 20px; /* Espaciado interno */
+  margin: 0 5px; /* Espaciado entre botones */
+  cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, color 0.3s; /* Suaviza la transición de colores */
+}
+
+.sort-bar button:hover {
+  background-color: var(--P_DarkYellow); /* Color de fondo al pasar el mouse */
+  color: white; /* Color del texto al pasar el mouse */
+}
+
+.sort-bar button.active {
+  background-color: #5cb85c; /* Color de fondo para el botón activo */
+  color: white; /* Color del texto para el botón activo */
+}
+
+.iconoEditar,
+.iconoEliminar {
+  position: absolute; /* Posicionamiento absoluto respecto a su contenedor relativo más cercano */
+  cursor: pointer; /* Cambia el cursor a mano para indicar acción */
+  width: 40px;
+  height: auto;
+  bottom: 255px;
+}
+
+.iconoEditar {
+  right: 40px; /* Ajusta para posicionar el icono de editar */
+}
+
+.iconoEliminar {
+  right: 10px; /* Ajusta para posicionar el icono de eliminar */
+}
+
+.iconoEditar:hover,
+.iconoEliminar:hover {
+  transform: scale(1.2); /* Escala el icono al pasar el mouse */
 }
 
 .card h3 {
-    margin-top: 0;
+  margin-top: 0;
+}
+
+/*parte pablo*/
+.review-bttn {
+  background-color: #5c67f2;
+  color: white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  width: 50%;
+}
+
+.review-bttns {
+  background-color: #5c67f2;
+  color: white;
+  padding: 10px 10px 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  width: 40%;
+}
+
+.review-bttn-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.rating {
+  display: flex;
+  float: left;
+  flex-direction: row-reverse;
+  unicode-bidi: bidi-override;
+  direction: rtl; /* Reversa el orden para que funcione correctamente con RTL */
+}
+
+.star {
+  font-size: 32px;
+  color: #ccc;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.star:hover,
+.star.checked {
+  color: gold;
+}
+
+.rating > input {
+  display: none;
+}
+
+.rating > label {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;base64,../img/star.svg");
+}
+
+.rating > label:hover,
+.rating > label:hover ~ label,
+.rating > input:checked ~ label {
+  background-image: url("data:image/svg+xml;base64,../img/star-filled.svg");
+}
+
+.container {
+  display: center;
+  width: auto;
 }
