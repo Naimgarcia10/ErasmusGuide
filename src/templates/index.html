@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="logo-box">
+                <img src="logo.png" alt="Logo" class="logo">
+            </div>
+            <div class="user-box">
+                <button class="user-button">User</button>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">INICIO</a>
+            <a href="forum.html">FORUM</a>
+            <a href="#destinos-populares">DESTINOS POPULARES</a>
+            <a href="#convalidaciones">CONVALIDACIONES</a>
+            <a href="search_destination.html">VER DESTINOS</a>
+
+        </nav>
+    </header>
+    <!-- Aquí va el resto del contenido de tu página -->
+
+    <div id="contenedorExterior">
+        <div id="mapa" style="height: 400px;"></div>
+    </div>
+    
+
+
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script type="module" src="../scripts/index.js"></script>    
+</body>
+</html>
