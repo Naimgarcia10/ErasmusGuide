@@ -1,5 +1,7 @@
 // Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
+import { arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
 import {
   collection,
   doc,
@@ -442,22 +444,21 @@ function abrirModalOpiniones(universityName) {
           <form action="/submit-review" method="post">
             <label for="rating">Puntuación:</label>
             <div class="rating">
-              <i class="bi bi-star-fill star"></i>
-              <i class="bi bi-star-fill star"></i>
-              <i class="bi bi-star-fill star"></i>
-              <i class="bi bi-star-fill star"></i>
-              <i class="bi bi-star-fill star"></i>
+              <i class="bi bi-star-fill star" data-value="1"></i>
+              <i class="bi bi-star-fill star" data-value="2"></i>
+              <i class="bi bi-star-fill star" data-value="3"></i>
+              <i class="bi bi-star-fill star" data-value="4"></i>
+              <i class="bi bi-star-fill star" data-value="5"></i>
             </div>
 
             <label for="review">Reseña:</label>
             <textarea id="review" name="review"></textarea>
           </form>
             <div class="review-bttn-box">
-              <button class="review-bttns" type="submit">Enviar Reseña</button>
+              <button class="review-bttns" id="submitModalButton" type="submit">Enviar Reseña</button>
               <button class="review-bttns" id="closeModalButton">Cerrar</button>
             </div>
         </div>
-        <script src="../scripts/writeReviews.js"></script>
       </body>
     </html>
   `;
@@ -483,38 +484,58 @@ function abrirModalOpiniones(universityName) {
     modal.style.display = "none";
   });
 
-  const submitReview = document.getElementById("submit-review");
+  const submitReview = document.getElementById("submitModalButton");
   submitReview.addEventListener("click", () =>
     submitReviewFunction(universityName)
   );
+
+  setupStarRating(); // Configura el manejador de clic para las estrellas
 }
 
-/*
+let numStarsSelected = 0; // Esta variable guarda el número de estrellas seleccionadas
+
+function setupStarRating() {
+  const stars = document.querySelectorAll(".star");
+  stars.forEach((star) => {
+    star.addEventListener("click", function () {
+      numStarsSelected = this.getAttribute("data-value"); // Actualiza con el valor de la estrella clickeada
+      updateStars(stars, numStarsSelected); // Actualiza la UI
+    });
+  });
+}
+
+function updateStars(stars, selectedValue) {
+  stars.forEach((star) => {
+    if (parseInt(star.getAttribute("data-value")) <= selectedValue) {
+      star.classList.add("checked");
+    } else {
+      star.classList.remove("checked");
+    }
+  });
+}
+
 async function submitReviewFunction(universityName) {
-  const updatedData = {
-    Pais: document.getElementById("pais").value,
-    Ciudad: document.getElementById("ciudad").value,
-    NumeroConvenio: document.getElementById("numeroConvenio").value,
-    IdiomaImparticion: document.getElementById("idiomaImparticion").value,
-    Estudios: document.getElementById("estudios").value,
-    DuracionMeses: document.getElementById("duracionMeses").value,
-    Plazas: document.getElementById("plazas").value,
-    TitulacionesDisponibles: document
-      .getElementById("titulacionesDisponibles")
-      .value.split(",")
-      .map((t) => t.trim()),
-  };
+  const reviewText = document.getElementById("review").value;
+  const rating = parseInt(numStarsSelected); // Asegúrate de que es un número.
+
+  // Crea el objeto de reseña.
+  const reviewData = { review: reviewText, rating: rating };
+
+  // Referencia al documento específico para la universidad en la colección 'reviews'.
+  const universityRef = doc(db, "reviews", universityName);
 
   try {
-    const universityRef = doc(db, "destinos", universityName);
-    await updateDoc(universityRef, updatedData);
-    console.log("Cambios guardados con éxito!");
-    document.getElementById("modalEditar").style.display = "none"; // Cierra el modal después de guardar
+    // Usa setDoc con merge true para añadir la reseña o crear el documento si no existe.
+    await setDoc(
+      universityRef,
+      {
+        Reviews: arrayUnion(reviewData),
+      },
+      { merge: true }
+    );
+    console.log("Reseña añadida con éxito!");
+    document.getElementById("modalEditar").style.display = "none"; // Cierra el modal tras el éxito.
   } catch (error) {
-    console.error("Error al guardar los cambios: ", error);
+    console.error("Error al añadir la reseña: ", error);
   }
-}*/
-
-//_____________________________________
-
-//estrellas de reseña
+}
