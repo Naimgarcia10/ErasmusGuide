@@ -484,9 +484,22 @@ async function cargarReseñas(universityName) {
       const reviewCard = document.createElement("div");
       reviewCard.className = "review-card";
       reviewCard.innerHTML = `
-        <h3>Reseña ${index + 1}</h3>
-        <p>Puntuación: ${review.rating}</p>
-        <p>Reseña: ${review.review}</p>
+        <!DOCTYPE html>
+        <html lang="es">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Leer Reseñas de ${universityName}</title>
+            <link rel="stylesheet" href="../styles/main.css" />
+            <link rel="stylesheet" href="../styles/readReviews.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+          </head>
+          <body>
+            <h3>Reseña ${index + 1}</h3>
+            <p>Puntuación: ${review.rating}</p>
+            <p>Reseña: ${review.review}</p>
+          </body>
+        </html>
       `;
       reviewsContainer.appendChild(reviewCard);
     });
