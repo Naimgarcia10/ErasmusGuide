@@ -50,7 +50,7 @@
   
 
 /*##########################################################
-##############3 Search Destination Page#####################
+############## Search Destination Page######################
 ############################################################
 */
 
@@ -59,15 +59,13 @@ body {
     background-color: white;
     color: var(--black);
     margin: 0;
-    padding: 0px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
 h1 {
     color: #0F3A6F;
     margin-bottom: 50px;
+    text-align: center;
 }
 
 #searchForm {
@@ -80,6 +78,7 @@ h1 {
     gap: 20px;
     width: 100%;
     max-width: 400px;
+    margin: 0 auto;
 }
 
 label {

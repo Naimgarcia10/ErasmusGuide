@@ -27,8 +27,10 @@
     </header>
     <!-- Aquí va el resto del contenido de tu página -->
 
+    <h1 id="titulo">Universidades Disponibles</h1>
+
 <div class="sort-bar">
-    <h2>Ordenar por</h2>
+    <h3>Ordenar por</h2>
     <button id="sortByAgreementNumber">Numero de Convenio</button>
     <button id="sortByCountry">País</button>
     <button id="sortByCity">Ciudad</button>
@@ -38,12 +40,14 @@
     <button id="sortByDuration">Duracion</button>
 </div>
 
-<div id="universitiesContainer" class="cards-container">
-    <!-- Las tarjetas de universidades se generan aquí dinámicamente -->
+<div class="universities-wrapper">
+    <div id="universitiesContainer" class="cards-container">
+        <!-- Las tarjetas de universidades se generan aquí dinámicamente -->
+    </div>
+    <!-- Icono Plus para añadir una nueva universidad, ahora fuera del contenedor de tarjetas -->
+    <img src="../media/plus.png" id="añadirUniversidad" alt="Añadir Universidad" class="add-icon" />
 </div>
 
-<!-- Icono Plus para añadir una nueva universidad -->
-<img src="../media/plus.png" id="añadirUniversidad" alt="Añadir Universidad" />
 
 <!-- Modal Editar Universidad -->
 <div id="modalEditar" class="modal">

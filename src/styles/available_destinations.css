@@ -57,13 +57,27 @@ header {
 # Estilos para la página de destinos disponibles
 #####################################################
 */
+
 .card-container {
   perspective: 1000px;
   width: 300px; /* Ancho de la tarjeta */
-  height: 280px; /* Altura de la tarjeta */
+  height: 340px; /* Altura de la tarjeta */
   margin: 20px;
   display: inline-block;
   position: relative;
+  
+}
+
+#añadirUniversidad {
+  display: none;
+  height: 150px;
+  width: auto;
+  position: relative;
+  top: 60px;
+}
+
+#añadirUniversidad:hover {
+  transform: scale(1.2); /* Escala el icono al pasar el mouse */
 }
 
 .card-inner {
@@ -99,32 +113,74 @@ header {
   transform: rotateY(180deg);
 }
 
-#añadirUniversidad {
-  display: none;
-}
-
+/* Estilo básico para el modal */
 /* Estilo básico para el modal */
 .modal {
   display: none; /* Oculto por defecto */
   position: fixed; /* Se mantiene en lugar */
-  z-index: 1; /* Se sitúa encima de todo */
+  z-index: 10; /* Asegura que está sobre otros elementos */
   left: 0;
   top: 0;
   width: 100%; /* Anchura completa */
   height: 100%; /* Altura completa */
   overflow: auto; /* Habilita el scroll si es necesario */
-  background-color: rgb(0, 0, 0); /* Color de fondo */
   background-color: rgba(0, 0, 0, 0.4); /* Color de fondo con opacidad */
 }
 
 /* Contenido/Estilo del modal */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% desde el top y centrado */
+  color: var(--P_DarkBlue); /* Color del texto */
+  margin: 5% auto; /* 15% desde el top y centrado */
   padding: 20px;
   border: 1px solid #888;
-  width: 50%; /* Puede ser más o menos, dependiendo del diseño */
-  height: auto;
+  width: 40%; /* Puede ser más o menos, dependiendo del diseño */
+  height: 65%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sutil sombra para efecto de profundidad */
+  border-radius: 10px; /* Bordes redondeados del contenedor del modal */
+}
+
+/* Estilo para los elementos de entrada de datos */
+input[type="text"] {
+  width: 50%; /* Ancho relativo al contenedor para dar un poco de margen */
+  padding: 8px; /* Espacio interno para que el texto no esté pegado a los bordes */
+  margin: 5px 0; /* Margen vertical para separar los campos de texto */
+  box-sizing: border-box; /* El padding y borde no aumentan el ancho total */
+  border: 1px solid #ccc; /* Bordes sutiles */
+  border-radius: 5px; /* Bordes ligeramente redondeados para los cuadros de texto */
+  
+}
+
+#guardarCambiosNuevaUniversidad{
+  background-color: var(--P_DarkYellow); /* Color de fondo */
+  color: var(--P_DarkBlue); /* Color del texto */
+  padding: 10px 10px; /* Espaciado interno */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar el mouse */
+  transition: background-color 0.3s, color 0;
+  position: relative;
+  margin-top: 10px;
+  left: 30%;
+}
+
+#guardarCambiosButton{
+  background-color: var(--P_DarkYellow); /* Color de fondo */
+  color: var(--P_DarkBlue); /* Color del texto */
+  padding: 10px 10px; /* Espaciado interno */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar el mouse */
+  transition: background-color 0.3s, color 0;
+  position: relative;
+  margin-top: 10px;
+  left: 30%;
+}
+
+
+
+#titulo{
+  text-align: center;
 }
 
 /* El botón cerrar */
@@ -172,17 +228,24 @@ header {
   color: white; /* Color del texto para el botón activo */
 }
 
-.iconoEditar,
+.iconoEditar {
+  position: absolute; /* Posicionamiento absoluto respecto a su contenedor relativo más cercano */
+  cursor: pointer; /* Cambia el cursor a mano para indicar acción */
+  width: 45px;
+  height: auto;
+  bottom: 320px;
+}
+
 .iconoEliminar {
   position: absolute; /* Posicionamiento absoluto respecto a su contenedor relativo más cercano */
   cursor: pointer; /* Cambia el cursor a mano para indicar acción */
   width: 40px;
   height: auto;
-  bottom: 255px;
+  bottom: 315px;
 }
 
 .iconoEditar {
-  right: 40px; /* Ajusta para posicionar el icono de editar */
+  right: 45px; /* Ajusta para posicionar el icono de editar */
 }
 
 .iconoEliminar {
@@ -197,6 +260,8 @@ header {
 .card h3 {
   margin-top: 0;
 }
+
+
 
 /*parte pablo*/
 .review-bttn {
