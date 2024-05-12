@@ -7,7 +7,7 @@ import {
 const { db } = initializeFirebase();
 
 // Inicializa el mapa
-var mapa = L.map('mapa').setView([50.069194100368165, 14.49805259658991], 4);  // Centro de Europa aproximadamente
+var mapa = L.map('mapa').setView([42.55268700457353, 12.431455863032317], 4);  // Centro de Europa aproximadamente
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
     maxZoom: 18,
