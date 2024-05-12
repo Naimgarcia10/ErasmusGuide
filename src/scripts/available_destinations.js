@@ -15,8 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 let universidadesFiltradas = [];
-//let role = sessionStorage.getItem("role");
-let role = "coordinator";
+let role = sessionStorage.getItem("role");
 
 // Inicializa Firebase
 const { db } = initializeFirebase();
@@ -232,6 +231,10 @@ function abrirDialogoEditar(universityName, universityData) {
         <input type="text" id="plazas" name="plazas" value="${universityData.Plazas}"><br>
         <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
         <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles" value="${universityData.TitulacionesDisponibles.join(", ")}"><br>
+        <label for="coordenadas">Coordenadas:</label>
+        <input type="text" id="coordenadas" name="coordenadas" value="${universityData.Coordenadas}"><br>
+
+
         <button id="guardarCambiosButton">Guardar cambios</button>
     `;
 
@@ -264,6 +267,7 @@ async function actualizarUniversidad(universityName) {
       .getElementById("titulacionesDisponibles")
       .value.split(",")
       .map((t) => t.trim()),
+    Coordenadas: document.getElementById("coordenadas").value
   };
 
   try {
@@ -342,6 +346,9 @@ document.getElementById("añadirUniversidad").addEventListener("click", () => {
         <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
         <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles"><br>
 
+        <label for="coordenadas">Coordenadas:</label>
+        <Input type="text" id="coordenadas" name="coordenadas""><br>
+
         <button id="guardarCambiosNuevaUniversidad">Guardar nueva universidad</button>
     `;
 
@@ -378,6 +385,7 @@ async function crearNuevaUniversidad() {
       .getElementById("titulacionesDisponibles")
       .value.split(",")
       .map((t) => t.trim()),
+    Coordenadas: document.getElementById("coordenadas").value
   };
 
   if (!nombreUniversidad) {
