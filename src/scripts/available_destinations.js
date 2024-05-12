@@ -1,6 +1,9 @@
 // Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
+<<<<<<< HEAD
 
+=======
+>>>>>>> c5d7c6d57f28b12ba4dc74182643d8512e3d297e
 
 import {
   doc,
@@ -9,9 +12,13 @@ import {
   setDoc,
   deleteDoc,
   getFirestore,
+<<<<<<< HEAD
   arrayUnion,
   collection,
   getDocs
+=======
+  arrayUnion,
+>>>>>>> c5d7c6d57f28b12ba4dc74182643d8512e3d297e
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 let universidadesFiltradas = [];

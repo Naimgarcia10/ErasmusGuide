@@ -30,3 +30,8 @@ body{
 #titulo{
    margin-top: 10px;
 }
+
+
+body h1{
+    margin: 1rem;
+}
