@@ -1,15 +1,15 @@
 // Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import { arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
 
 import {
-  collection,
   doc,
   getDoc,
   updateDoc,
   setDoc,
   deleteDoc,
   getFirestore,
+  arrayUnion
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 let destinosData;

@@ -1,6 +1,6 @@
 import {createUserWithEmailAndPassword, getAuth, sendEmailVerification} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import {initializeFirebase} from "../firebase/firebaseConnection.js";
-import { getUsers, addUser } from "./usersManagement.js";
+import { addUser } from "./usersManagement.js";
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
 const auth = getAuth(app);

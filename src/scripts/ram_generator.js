@@ -21,7 +21,7 @@ ram_btn.addEventListener('click', async (e) => {
     const nombreCoord = inputNombreCoord.value;
     const emailCoord = inputEmailCoord.value;
     const split_nombre = nombre.split(' ');
-    var nombre_;
+    let nombre_;
     if (split_nombre.length < 2) {
         nombre_ = split_nombre[0];
     }else{
@@ -33,9 +33,9 @@ ram_btn.addEventListener('click', async (e) => {
     const año = fecha.getFullYear();
     const fecha_actual = `${dia}/${mes}/${año}`;
 
-    var selectoresAsignaturaEspaña = [];
-    var selectoresConvalidacionErasmus = [];
-    var asignaturaEspañaSeleccionada, convalidacionErasmusSeleccionada;
+    let selectoresAsignaturaEspaña = [];
+    let selectoresConvalidacionErasmus = [];
+    let asignaturaEspañaSeleccionada, convalidacionErasmusSeleccionada;
 
     for (let i = 1; i <= 3; i++) {
         const asignaturaEspaña = document.getElementById(`asignaturaEspaña${i}`);
@@ -60,7 +60,7 @@ ram_btn.addEventListener('click', async (e) => {
     const ciudad = sessionStorage.getItem('selectedCity');
     const universidad = sessionStorage.getItem('selectedUniversity');
 
-    var data = {
+    let data = {
         "[titulacion]": titulacion, 
         "[apellidos]": apellidos,
         "[nombre]": nombre,
@@ -99,8 +99,8 @@ ram_btn.addEventListener('click', async (e) => {
     })
     .then(response => response.blob())
     .then(blob => {
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
         a.href = url;
         a.download = `ram_${nombre_}.docx`;
         a.click();

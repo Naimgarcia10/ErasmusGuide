@@ -2,13 +2,7 @@
 body {
     font-family: Arial, sans-serif;
 }
-/* #ram-btn {
-    background-color: #003366; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-} */
+
 
 #ram-btn-container {
     display: flex;
