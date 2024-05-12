@@ -3,7 +3,6 @@ import {
   doc,
   getDoc,
   updateDoc,
-  arrayUnion,
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
@@ -78,46 +77,42 @@ async function addSubject() {
 }
 
 async function removeSubjectsByCode() {
-  const codeToRemove = document.getElementById("id_subject_remove").value; // Asume que tienes un input con este ID.
-  const gradosRef = doc(db, "asignaturas", "Grados"); // Referencia al documento que contiene los grados.
+  const codeToRemove = document.getElementById("id_subject_remove").value;
+  const gradosRef = doc(db, "asignaturas", "Grados");
 
   try {
     const gradosSnap = await getDoc(gradosRef);
     console.log("Grados:", gradosSnap.exists());
 
     if (gradosSnap.exists()) {
-      let data = gradosSnap.data(); // Obtiene los datos actuales.
+      let data = gradosSnap.data();
 
-      // Aquí necesitas definir cómo iterar sobre tus datos y filtrar las asignaturas.
-      // Este es un pseudocódigo que deberás ajustar según tu estructura exacta.
-      Object.keys(data).forEach((gradoKey) => {
-        Object.keys(data[gradoKey]).forEach((paisKey) => {
-          Object.keys(data[gradoKey][paisKey]).forEach((ciudadKey) => {
-            Object.keys(data[gradoKey][paisKey][ciudadKey]).forEach(
-              (universidadKey) => {
-                let asignaturas =
-                  data[gradoKey][paisKey][ciudadKey][universidadKey]
-                    .Asignaturas;
-                let asignaturasFiltradas = asignaturas.filter(
-                  (asignatura) =>
-                    asignatura.code_origin !== codeToRemove &&
-                    asignatura.code_destiny !== codeToRemove
-                );
-                // Actualiza las asignaturas filtradas.
-                data[gradoKey][paisKey][ciudadKey][universidadKey].Asignaturas =
-                  asignaturasFiltradas;
-              }
-            );
-          });
-        });
-      });
+      function filterSubjects(obj) {
+        // Base case: if the object has 'Asignaturas', filter them
+        if (obj.Asignaturas) {
+          obj.Asignaturas = obj.Asignaturas.filter(
+            (asignatura) =>
+              asignatura.code_origin !== codeToRemove &&
+              asignatura.code_destiny !== codeToRemove
+          );
+        }
 
-      // Finalmente, actualiza el documento en Firestore con los datos filtrados.
+        // Recursively traverse nested objects
+        for (let key in obj) {
+          if (typeof obj[key] === "object" && obj[key] !== null) {
+            filterSubjects(obj[key]);
+          }
+        }
+      }
+
+      // Start filtering from the root of the data object
+      filterSubjects(data);
+
+      // Update the document in Firestore with filtered data
       await updateDoc(gradosRef, data);
       console.log("Asignaturas actualizadas en Firestore.");
     }
   } catch (error) {
-    //   console.log('Grados:', gradosSnap.exists());
     console.error("Error al intentar eliminar asignaturas por código:", error);
   }
 }
@@ -127,38 +122,36 @@ document
   .addEventListener("click", removeSubjectsByCode);
 
 async function removeSubjectByIdPair() {
-  const idPairToRemove = document.getElementById("id_pair_remove").value; // Assuming you have an input with this ID.
-  const gradosRef = doc(db, "asignaturas", "Grados"); // Reference to the document that contains the degrees.
+  const idPairToRemove = document.getElementById("id_pair_remove").value;
+  const gradosRef = doc(db, "asignaturas", "Grados");
 
   try {
     const gradosSnap = await getDoc(gradosRef);
     console.log("Grados:", gradosSnap.exists());
 
     if (gradosSnap.exists()) {
-      let data = gradosSnap.data(); // Get the current data.
+      let data = gradosSnap.data();
 
-      // Iterate over the data and filter the subjects.
-      Object.keys(data).forEach((gradoKey) => {
-        Object.keys(data[gradoKey]).forEach((paisKey) => {
-          Object.keys(data[gradoKey][paisKey]).forEach((ciudadKey) => {
-            Object.keys(data[gradoKey][paisKey][ciudadKey]).forEach(
-              (universidadKey) => {
-                let asignaturas =
-                  data[gradoKey][paisKey][ciudadKey][universidadKey]
-                    .Asignaturas;
-                let asignaturasFiltradas = asignaturas.filter(
-                  (asignatura) => asignatura.code_pair !== idPairToRemove
-                );
-                // Update the filtered subjects.
-                data[gradoKey][paisKey][ciudadKey][universidadKey].Asignaturas =
-                  asignaturasFiltradas;
-              }
-            );
-          });
-        });
-      });
+      function filterSubjects(obj) {
+        // Base case: if the object contains 'Asignaturas', filter them
+        if (obj.Asignaturas) {
+          obj.Asignaturas = obj.Asignaturas.filter(
+            (asignatura) => asignatura.code_pair !== idPairToRemove
+          );
+        }
 
-      // Finally, update the document in Firestore with the filtered data.
+        // Recursively traverse nested objects
+        for (let key in obj) {
+          if (typeof obj[key] === "object" && obj[key] !== null) {
+            filterSubjects(obj[key]);
+          }
+        }
+      }
+
+      // Start filtering from the root of the data object
+      filterSubjects(data);
+
+      // Update the Firestore document with the filtered data
       await updateDoc(gradosRef, data);
       console.log("Subjects updated in Firestore.");
     }
