@@ -1,8 +1,6 @@
 // Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-
 import {
-  collection,
   doc,
   getDoc,
   updateDoc,
@@ -10,11 +8,12 @@ import {
   deleteDoc,
   getFirestore,
   arrayUnion,
+  collection,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-let destinosData;
 let universidadesFiltradas = [];
-let esCoordinador = true;
+let role = sessionStorage.getItem("role");
 
 // Inicializa Firebase
 const { db } = initializeFirebase();
@@ -26,7 +25,6 @@ const { db } = initializeFirebase();
 function crearTarjetaUniversidad(
   universityName,
   universityData,
-  esCoordinador
 ) {
   const cardContainer = document.createElement("div");
   cardContainer.className = "card-container";
@@ -79,24 +77,27 @@ function crearTarjetaUniversidad(
   card.appendChild(cardBack);
   cardContainer.appendChild(card);
 
-  const iconoEditar = new Image();
-  iconoEditar.src = "../media/lapiz.png";
-  iconoEditar.addEventListener("click", () =>
-    abrirDialogoEditar(universityName, universityData)
-  );
-  iconoEditar.setAttribute("class", "iconoEditar");
-  cardBack.appendChild(iconoEditar);
+  if(role === "coordinator"){
 
-  const iconoEliminar = new Image();
-  iconoEliminar.src = "../media/papelera.png";
-  iconoEliminar.addEventListener("click", () =>
-    eliminarUniversidad(universityName)
-  );
-  iconoEliminar.setAttribute("class", "iconoEliminar");
-  cardBack.appendChild(iconoEliminar);
+    const iconoEditar = new Image();
+    iconoEditar.src = "../media/lapiz.png";
+    iconoEditar.addEventListener("click", () =>
+      abrirDialogoEditar(universityName, universityData)
+    );
+    iconoEditar.setAttribute("class", "iconoEditar");
+    cardBack.appendChild(iconoEditar);
 
-  const añadirUniversidadButton = document.getElementById("añadirUniversidad");
-  añadirUniversidadButton.style.display = "block";
+    const iconoEliminar = new Image();
+    iconoEliminar.src = "../media/papelera.png";
+    iconoEliminar.addEventListener("click", () =>
+      eliminarUniversidad(universityName)
+    );
+    iconoEliminar.setAttribute("class", "iconoEliminar");
+    cardBack.appendChild(iconoEliminar);
+
+    const añadirUniversidadButton = document.getElementById("añadirUniversidad");
+    añadirUniversidadButton.style.display = "block";
+}
 
   return cardContainer;
 }
@@ -106,24 +107,19 @@ function crearTarjetaUniversidad(
 ##############################################################################################################*/
 
 async function cargarUniversidadesFiltradas(grade, university, country, city) {
-  // Lista de referencias de universidades
-  const universidadesRef = [
-    "UniversidadAGH",
-    "UniversidadParma",
-    "UniversidadParis",
-  ]; // Extiende esta lista según sea necesario
+  // Referencia a la colección de universidades
+  const destinosRef = collection(db, "destinos");
   let universidades = [];
 
-  for (const univRef of universidadesRef) {
-    const docRef = doc(db, "destinos", univRef);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const universityData = docSnap.data();
-      universityData.universityName = univRef; // Guardar el nombre para usarlo más tarde
+  // Obtener todos los documentos de la colección "destinos"
+  const querySnapshot = await getDocs(destinosRef);
+  querySnapshot.forEach(doc => {
+    if (doc.exists()) {
+      const universityData = doc.data();
+      universityData.universityName = doc.id; // Guardar el nombre de la universidad usando el ID del documento
       universidades.push(universityData);
     }
-  }
+  });
 
   // Filtrar los datos cargados
   universidadesFiltradas = filtrarDestinos(
@@ -135,6 +131,7 @@ async function cargarUniversidadesFiltradas(grade, university, country, city) {
   );
   mostrarUniversidades(universidadesFiltradas);
 }
+
 
 function filtrarDestinos(universidades, grade, university, country, city) {
   return universidades.filter((univ) => {
@@ -204,50 +201,55 @@ function abrirDialogoEditar(universityName, universityData) {
   const modalContent = document.querySelector(".modal-content");
   modalContent.innerHTML = ""; // Limpiar el contenido anterior
 
+  // Crear y añadir botón de cierre
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Cerrar";
+  closeButton.style.position = "absolute";
+  closeButton.style.top = "100px";
+  closeButton.style.right = "450px";
+  closeButton.onclick = () => { modal.style.display = "none"; };
+
   const formContainer = document.createElement("div");
   formContainer.innerHTML = `
         <label for="nombreUniversidad">Nombre:</label>
         <input type="text" id="nombreUniversidad" name="nombreUniversidad" value="${universityName}" disabled><br>
         <label for="pais">País:</label>
-        <input type="text" id="pais" name="pais" value="${
-          universityData.Pais
-        }"><br>
+        <input type="text" id="pais" name="pais" value="${universityData.Pais}"><br>
         <label for="ciudad">Ciudad:</label>
-        <input type="text" id="ciudad" name="ciudad" value="${
-          universityData.Ciudad
-        }"><br>
+        <input type="text" id="ciudad" name="ciudad" value="${universityData.Ciudad}"><br>
         <label for="numeroConvenio">Número de convenio:</label>
-        <input type="text" id="numeroConvenio" name="numeroConvenio" value="${
-          universityData.NumeroConvenio
-        }"><br>
+        <input type="text" id="numeroConvenio" name="numeroConvenio" value="${universityData.NumeroConvenio}"><br>
         <label for="idiomaImparticion">Idioma de impartición:</label>
-        <input type="text" id="idiomaImparticion" name="idiomaImparticion" value="${
-          universityData.IdiomaImparticion
-        }"><br>
+        <input type="text" id="idiomaImparticion" name="idiomaImparticion" value="${universityData.IdiomaImparticion}"><br>
         <label for="estudios">Estudios Ofrecidos:</label>
-        <input type="text" id="estudios" name="estudios" value="${
-          universityData.Estudios
-        }"><br>
+        <input type="text" id="estudios" name="estudios" value="${universityData.Estudios}"><br>
         <label for="duracionMeses">Duración (meses):</label>
-        <input type="text" id="duracionMeses" name="duracionMeses" value="${
-          universityData.DuracionMeses
-        }"><br>
+        <input type="text" id="duracionMeses" name="duracionMeses" value="${universityData.DuracionMeses}"><br>
         <label for="plazas">Plazas:</label>
-        <input type="text" id="plazas" name="plazas" value="${
-          universityData.Plazas
-        }"><br>
+        <input type="text" id="plazas" name="plazas" value="${universityData.Plazas}"><br>
         <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
-        <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles" value="${universityData.TitulacionesDisponibles.join(
-          ", "
-        )}"><br>
+        <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles" value="${universityData.TitulacionesDisponibles.join(", ")}"><br>
+        <label for="coordenadas">Coordenadas:</label>
+        <input type="text" id="coordenadas" name="coordenadas" value="${universityData.Coordenadas}"><br>
+
+
         <button id="guardarCambiosButton">Guardar cambios</button>
     `;
+
+  modalContent.appendChild(closeButton);
   modalContent.appendChild(formContainer);
 
-  const guardarCambiosButton = document.getElementById("guardarCambiosButton");
-  guardarCambiosButton.addEventListener("click", () =>
+  // Añadir funcionalidad para guardar los cambios de la universidad
+  document.getElementById("guardarCambiosButton").addEventListener("click", () =>
     actualizarUniversidad(universityName)
   );
+
+  // Añadir funcionalidad para cerrar el modal al hacer clic fuera del contenido del modal
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
 }
 
 async function actualizarUniversidad(universityName) {
@@ -263,6 +265,7 @@ async function actualizarUniversidad(universityName) {
       .getElementById("titulacionesDisponibles")
       .value.split(",")
       .map((t) => t.trim()),
+    Coordenadas: document.getElementById("coordenadas").value
   };
 
   try {
@@ -270,6 +273,7 @@ async function actualizarUniversidad(universityName) {
     await updateDoc(universityRef, updatedData);
     console.log("Cambios guardados con éxito!");
     document.getElementById("modalEditar").style.display = "none"; // Cierra el modal después de guardar
+    location.reload(); // Refresca la página para mostrar los cambios
   } catch (error) {
     console.error("Error al guardar los cambios: ", error);
   }
@@ -284,6 +288,8 @@ function eliminarUniversidad(universityName) {
     deleteDoc(universityRef)
       .then(() => {
         console.log(`Universidad ${universityName} eliminada con éxito.`);
+        // Refrescar la página después de eliminar la universidad con éxito
+        location.reload();
       })
       .catch((error) => {
         console.error("Error al eliminar la universidad: ", error);
@@ -293,11 +299,21 @@ function eliminarUniversidad(universityName) {
   }
 }
 
+
 document.getElementById("añadirUniversidad").addEventListener("click", () => {
   const modal = document.getElementById("modalEditar");
   modal.style.display = "block";
+
   const modalContent = document.querySelector(".modal-content");
   modalContent.innerHTML = ""; // Limpiar el contenido anterior
+
+  // Crear y añadir botón de cierre
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Cerrar";
+  closeButton.style.position = "absolute";
+  closeButton.style.top = "100px";
+  closeButton.style.right = "450px";
+  closeButton.onclick = () => { modal.style.display = "none"; };
 
   const formContainer = document.createElement("div");
   formContainer.innerHTML = `
@@ -328,15 +344,26 @@ document.getElementById("añadirUniversidad").addEventListener("click", () => {
         <label for="titulacionesDisponibles">Titulaciones Disponibles:</label>
         <input type="text" id="titulacionesDisponibles" name="titulacionesDisponibles"><br>
 
+        <label for="coordenadas">Coordenadas:</label>
+        <Input type="text" id="coordenadas" name="coordenadas""><br>
+
         <button id="guardarCambiosNuevaUniversidad">Guardar nueva universidad</button>
     `;
+
+  modalContent.appendChild(closeButton);
   modalContent.appendChild(formContainer);
 
   // Añadir funcionalidad para guardar la nueva universidad
-  document
-    .getElementById("guardarCambiosNuevaUniversidad")
-    .addEventListener("click", crearNuevaUniversidad);
+  document.getElementById("guardarCambiosNuevaUniversidad").addEventListener("click", crearNuevaUniversidad);
+
+  // Añadir funcionalidad para cerrar el modal al hacer clic fuera del contenido del modal
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
 });
+
 
 async function crearNuevaUniversidad() {
   const db = getFirestore(); // Asegúrate de obtener la instancia de Firestore
@@ -356,6 +383,7 @@ async function crearNuevaUniversidad() {
       .getElementById("titulacionesDisponibles")
       .value.split(",")
       .map((t) => t.trim()),
+    Coordenadas: document.getElementById("coordenadas").value
   };
 
   if (!nombreUniversidad) {
@@ -370,10 +398,12 @@ async function crearNuevaUniversidad() {
     await setDoc(universityRef, nuevaUniversidadData);
     console.log("Nueva universidad añadida con éxito!");
     document.getElementById("modalEditar").style.display = "none"; // Cierra el modal después de guardar
+    location.reload(); // Refresca la página para mostrar los cambios
   } catch (error) {
     console.error("Error al añadir nueva universidad: ", error);
   }
 }
+
 
 /*##################################################################
 ############################ EVENTOS ###############################

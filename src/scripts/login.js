@@ -2,14 +2,14 @@ import { initializeFirebase } from "../firebase/firebaseConnection.js";
 import {signInWithEmailAndPassword, getAuth} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"; 
 import { isCoordinator } from "./usersManagement.js";
 
-// Inicializa Firebase
+
 const { app, db } = initializeFirebase();
 const auth = getAuth(app);
 
-// Obtén el formulario de inicio de sesión
+
 const loginForm = document.getElementById('login-form');
 
-// Manejar el evento submit del formulario
+
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault(); 
   loginUser();
@@ -26,9 +26,9 @@ async function loginUser(){
     const password = loginForm['password'].value;
     const temporaryMessage = document.getElementById('temporary-message-login');
     
-    // Inicia sesión
+    
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        // Limpiar el formulario
+        
         loginForm.reset();
         temporaryMessage.textContent = 'Inicio de sesión exitoso';
         sessionStorage.setItem('user', JSON.stringify(userCredential.user));

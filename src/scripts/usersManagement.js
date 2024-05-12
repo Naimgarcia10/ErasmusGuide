@@ -1,7 +1,7 @@
 import {initializeFirebase} from "../firebase/firebaseConnection.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-import {doc, getDoc, getDocs, collection, setDoc, addDoc} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-// Inicializa Firebase
+import {doc, getDoc, getDocs, collection, setDoc} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
 const { app, db } = initializeFirebase();
 const auth = getAuth(app);
 
@@ -26,11 +26,11 @@ async function getUsers() {
     if (coords.includes(email)){
       sessionStorage.setItem('role', 'coordinator');
       console.log("Es coordinador");
-      //return true;
+      
     } else {
       sessionStorage.setItem('role', 'user');
       console.log("No es coordinador");
-      //return false;
+      
     }
   }
 
@@ -54,7 +54,7 @@ async function getFirestoreUsers() {
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
   } else {
-    // docSnap.data() will be undefined in this case
+    
     console.log("No such document!");
   }
 }

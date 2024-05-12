@@ -56,7 +56,8 @@ document.querySelector('.grado-select').addEventListener('change', async (e) => 
 document.querySelector('.country-select').addEventListener('change', async (e) => {
   const selectedCountry = e.target.value; // Corrige el nombre de la variable para seguir las convenciones
   const citySelect = document.querySelector('.city-select');
-  citySelect.innerHTML = '<option value="">Selecciona la ciudad</option>'; // Limpiar el select de ciudades
+  citySelect.innerHTML = '<option value="">Selecciona la ciudad</option>'; // Limpiar el select de ciuda
+  
 
   if (selectedCountry) {
     const gradosRef = doc(db, 'asignaturas', 'Grados');

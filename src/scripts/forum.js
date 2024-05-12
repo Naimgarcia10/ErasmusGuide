@@ -2,7 +2,6 @@ import { initializeFirebase } from "../firebase/firebaseConnection.js";
 import {
   doc,
   addDoc,
-  setDoc,
   getDocs,
   getDoc,
   collection,
@@ -39,7 +38,7 @@ async function addDiscussion(name, title, topic, city, body) {
 
 
 function closeDiscussionForm() {
-  var formContainer = document.getElementById('discussionFormContainer');
+  let formContainer = document.getElementById('discussionFormContainer');
   formContainer.style.display = "none";
   document.getElementById('showFormButton').textContent = "Crear Nueva Discusión"; // Restablecer el texto del botón
 }
@@ -230,7 +229,7 @@ document.getElementById('discussionForm').addEventListener('submit', (event) => 
 
 
 document.getElementById('showFormButton').addEventListener('click', function() {
-  var formContainer = document.getElementById('discussionFormContainer');
+  let formContainer = document.getElementById('discussionFormContainer');
   if (formContainer.style.display === "none") {
       formContainer.style.display = "block";
       this.textContent = "Cancelar Creación";

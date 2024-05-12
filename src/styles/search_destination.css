@@ -1,56 +1,61 @@
-  header {
-    background-color: #ffffff; /* Azul oscuro para el encabezado total */
-  }
-  
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #5d799c; /* Azul más claro para la barra superior */
-  }
-  
-  .logo {
-    height: 50px; /* Ajusta la altura del logo */
-    width: auto; /* Para mantener la proporción */
-  }
-  
-  .user-box {
-    margin-right: 10px; /* Añade margen a la derecha si es necesario */
-  }
-  
-  .user-button {
-    padding: 10px 20px;
-    background-color: #003366; /* Azul aún más oscuro para el botón del usuario */
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .navbar {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    background-color: #0f3a6f; /* Azul oscuro para la barra de navegación */
-    padding: 10px 0; /* Añade un relleno vertical */
-  }
-  
-  .navbar a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    margin: 0 80px;
-    display: inline-block;
-  }
-  
-  .navbar a:hover {
-    background-color: #002244; /* Azul más oscuro para el hover */
-    transition: background-color 0.3s;
-  }
-  
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #ffffff; /* Azul oscuro para el encabezado total */
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #5d799c; /* Azul más claro para la barra superior */
+}
+
+.logo {
+  height: 50px; /* Ajusta la altura del logo */
+  width: auto; /* Para mantener la proporción */
+}
+
+.user-box {
+  margin-right: 10px; /* Añade margen a la derecha si es necesario */
+}
+
+.user-button {
+  padding: 10px 20px;
+  background-color: #003366; /* Azul aún más oscuro para el botón del usuario */
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.navbar {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: #0f3a6f; /* Azul oscuro para la barra de navegación */
+  padding: 10px 0; /* Añade un relleno vertical */
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 0 80px;
+  display: inline-block;
+}
+
+.navbar a:hover {
+  background-color: #002244; /* Azul más oscuro para el hover */
+  transition: background-color 0.3s;
+}
 
 /*##########################################################
-##############3 Search Destination Page#####################
+############## Search Destination Page######################
 ############################################################
 */
 
@@ -59,15 +64,13 @@ body {
     background-color: white;
     color: var(--black);
     margin: 0;
-    padding: 0px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
 h1 {
     color: #0F3A6F;
     margin-bottom: 50px;
+    text-align: center;
 }
 
 #searchForm {
@@ -80,6 +83,7 @@ h1 {
     gap: 20px;
     width: 100%;
     max-width: 400px;
+    margin: 0 auto;
 }
 
 label {

@@ -2,13 +2,14 @@
 body {
     font-family: Arial, sans-serif;
 }
- #ram-btn {
-    background-color: #003366; 
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
+
+#ram-btn {
+  background-color: #003366; 
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
 } 
 
 #ram-btn-container {

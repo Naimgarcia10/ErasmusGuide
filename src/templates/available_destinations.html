@@ -8,31 +8,35 @@
     <link rel="stylesheet" href="../styles/available_destinations.css">
     <link rel="stylesheet" href="../styles/header.css">
 </head>
-<body>
-    <header>
-        <div class="top-bar">
-            <div class="logo-box">
-                <a href="index.html"><img src="../media/logo.png" alt="Logo" class="logo"></a>
-            </div>
-            <div class="user-box" id="user-box-login">
-                <a href="login.html"><button class="user-button" id="login-button">Login</button></a>
-            </div>
-            <div class="user-box" id="user-box-logout" style="display: none;">
-                <button class="user-button" id="logout-button">Logout</button>
-            </div>
+
+<header>
+    <div class="top-bar">
+        <div class="logo-box">
+            <a href="index.html"><img src="../media/logo.png" alt="Logo" class="logo"></a>
         </div>
-        <nav class="navbar">
-            <a href="index.html">INICIO</a>
-            <a href="forum.html">FORUM</a>
-            <a href="#destinos-populares">DESTINOS POPULARES</a>
-            <a href="courses.html">CONVALIDACIONES</a>
-            <a href="search_destination.html">VER DESTINOS</a>
-        </nav>
-    </header>
+        <div class="user-box" id="user-box-login">
+            <a href="login.html"><button class="user-button" id="login-button">Login</button></a>
+        </div>
+        <div class="user-box" id="user-box-logout" style="display: none;">
+            <button class="user-button" id="logout-button">Logout</button>
+        </div>
+    </div>
+    <nav class="navbar">
+        <a href="index.html">INICIO</a>
+        <a href="forum.html">FORUM</a>
+        <a href="#destinos-populares">DESTINOS POPULARES</a>
+        <a href="courses.html">CONVALIDACIONES</a>
+        <a href="search_destination.html">VER DESTINOS</a>
+    </nav>
+</header>
+
+<body>
     <!-- Aquí va el resto del contenido de tu página -->
 
+    <h1 id="titulo">Universidades Disponibles</h1>
+
 <div class="sort-bar">
-    <h2>Ordenar por</h2>
+    <h3>Ordenar por</h2>
     <button id="sortByAgreementNumber">Numero de Convenio</button>
     <button id="sortByCountry">País</button>
     <button id="sortByCity">Ciudad</button>
@@ -42,12 +46,14 @@
     <button id="sortByDuration">Duracion</button>
 </div>
 
-<div id="universitiesContainer" class="cards-container">
-    <!-- Las tarjetas de universidades se generan aquí dinámicamente -->
+<div class="universities-wrapper">
+    <div id="universitiesContainer" class="cards-container">
+        <!-- Las tarjetas de universidades se generan aquí dinámicamente -->
+    </div>
+    <!-- Icono Plus para añadir una nueva universidad, ahora fuera del contenedor de tarjetas -->
+    <img src="../media/plus.png" id="añadirUniversidad" alt="Añadir Universidad" class="add-icon" />
 </div>
 
-<!-- Icono Plus para añadir una nueva universidad -->
-<img src="../media/plus.png" id="añadirUniversidad" alt="Añadir Universidad" />
 
 <!-- Modal Editar Universidad -->
 <div id="modalEditar" class="modal">

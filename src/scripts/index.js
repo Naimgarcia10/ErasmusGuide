@@ -1,26 +1,29 @@
-// Importa las funciones necesarias para la conexión con Firebase y la manipulación de Firestore
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import {collection, doc, getDoc, updateDoc,setDoc, deleteDoc, getFirestore } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import {
+  collection, getDocs, getFirestore
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 // Inicializa Firebase
-const {db } = initializeFirebase();
+const { db } = initializeFirebase();
 
-// Inicializar el mapa
-var mapa = L.map('mapa').setView([44.800918087917225, 10.325879738603822], 4); // Establece la ubicación inicial y el nivel de zoom
-
-// Agregar capa de mapa base (puedes usar diferentes proveedores de mapas)
+// Inicializa el mapa
+var mapa = L.map('mapa').setView([42.55268700457353, 12.431455863032317], 4);  // Centro de Europa aproximadamente
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
     maxZoom: 18,
 }).addTo(mapa);
 
-//UNIVERSIDAD DE PARMA
-L.marker([44.800918087917225, 10.325879738603822]).addTo(mapa)
-.bindPopup("Nombre: Universidad de Parma<br>Ciudad: Parma<br>Estudios: Derecho<br>Idioma de imparticion: Italiano").openPopup();
+// Función para cargar marcadores desde Firestore
+async function cargarMarcadores() {
+  const querySnapshot = await getDocs(collection(db, "destinos"));
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const coords = data.Coordenadas.split(",");  // Asume que las coordenadas están en formato "lat,lng"
+    L.marker([parseFloat(coords[0]), parseFloat(coords[1])]).addTo(mapa)
+      .bindPopup(`Nombre: ${doc.id}<br>Ciudad: ${data.Ciudad}<br>Estudios: ${data.Estudios}<br>Idioma de impartición: ${data.IdiomaImparticion}<br>País: ${data.Pais}`)
+      .openPopup();
+  });
+}
 
-//UNIVERSIDAD AGH KRAKOW
-L.marker([50.06464067476525, 19.92336102727471]).addTo(mapa)
-.bindPopup("Nombre: Universidad AGH<br>Ciudad: Cracovia<br>Estudios: Informatica, Derecho<br>Idioma de imparticion: Ingles").openPopup();
-
-L.marker([48.85884430000001, 2.2943506]).addTo(mapa)
-.bindPopup("Nombre: Universidad de Paris<br>Ciudad: Paris<br>Estudios: Arquitectura<br>Idioma de imparticion: Frances").openPopup();
+// Llamar a la función cargarMarcadores al cargar la página
+cargarMarcadores();

@@ -17,7 +17,7 @@ body {
 }
 
 #mapa {
-    width: 50%;
+    width: 90%;
     height: 100%;
 }
 
@@ -26,3 +26,36 @@ body{
     align-items: center;
     text-align: center;
 }
+
+#titulo{
+   margin-top: 10px;
+}
+
+
+body h1{
+    margin: 1rem;
+}
+
+.galeria-erasmus {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+    margin-top: 30px;
+  }
+  
+  .galeria-erasmus img {
+    max-width: 30%; /* Asegura que la imagen nunca sea más grande que su contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    margin: 5px;
+    border-radius: 8px; /* Estilo opcional */
+    object-fit:contain; /* Asegura que la imagen cubra el espacio sin distorsionarse */
+  }
+  
+  .galeria-erasmus img:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+  }
+  
+  h2 {
+    margin-top: 2rem;
+  }
