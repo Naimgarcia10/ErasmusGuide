@@ -1,3 +1,4 @@
 /src/firebase
 /src/scripts/ram_generator
-/.scannerwork
+.scannerwork/
+/src/media
