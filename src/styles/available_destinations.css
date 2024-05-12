@@ -24,14 +24,6 @@ header {
   margin-right: 10px; /* Añade margen a la derecha si es necesario */
 }
 
-.user-button {
-  padding: 10px 20px;
-  background-color: #003366; /* Azul aún más oscuro para el botón del usuario */
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
 .navbar {
   margin-top: 10px;
   display: flex;

@@ -8,24 +8,28 @@
     <title>Login</title>
 </head>
 
-<header>
-    <div class="top-bar">
-        <div class="logo-box">
-            <img src="logo.png" alt="Logo" class="logo">
-        </div>
-        <div class="user-box">
-            <button class="user-button">User</button>
-        </div>
-    </div>
-    <nav class="navbar">
-        <a href="forum.html">FORUM</a>
-        <a href="#destinos-populares">DESTINOS POPULARES</a>
-        <a href="courses.html">CONVALIDACIONES</a>
-        <a href="available_destinations.html">VER DESTINOS</a>
-    </nav>
-</header>
-
 <body>
+    <header>
+        <div class="top-bar">
+            <div class="logo-box">
+                <a href="index.html"><img src="../media/logo.png" alt="Logo" class="logo"></a>
+            </div>
+            <div class="user-box" id="user-box-login">
+                <a href="login.html"><button class="user-button" id="login-button">Login</button></a>
+            </div>
+            <div class="user-box" id="user-box-logout" style="display: none;">
+                <button class="user-button" id="logout-button">Logout</button>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">INICIO</a>
+            <a href="forum.html">FORUM</a>
+            <a href="#destinos-populares">DESTINOS POPULARES</a>
+            <a href="courses.html">CONVALIDACIONES</a>
+            <a href="search_destination.html">VER DESTINOS</a>
+        </nav>
+    </header>
+
     <div id="title-container">
         <h1 id="title">Iniciar Sesión</h1>
     </div>
@@ -37,10 +41,11 @@
             <input type="password" id="password" name="password" required>
             <a href="register.html">Registrarse</a>
             <a href="" id="reset-password">¿Olvidaste tu contraseña?</a>
-            <button type="submit">Iniciar Sesión</button>
+            <button type="submit" class="user-button">Iniciar Sesión</button>
         </form>
         <p id="temporary-message-login"></p>
     </div>
 </body>
     <script type="module" src="../scripts/login.js"></script>
+    <script type="module" src="../scripts/header.js"></script>
 </html>

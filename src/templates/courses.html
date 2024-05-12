@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Courses available</title>
-    <script type="module" src="../scripts/courses.js"></script>
-    <script type="module" src="../scripts/ram_generator.js"></script>
     <link rel="stylesheet" href="../styles/courses.css">
     <link rel="stylesheet" href="../styles/header.css">
 
@@ -17,17 +15,21 @@
     <header>
         <div class="top-bar">
             <div class="logo-box">
-                <img src="logo.png" alt="Logo" class="logo">
+                <a href="index.html"><img src="../media/logo.png" alt="Logo" class="logo"></a>
             </div>
-            <div class="user-box">
-                <button class="user-button">User</button>
+            <div class="user-box" id="user-box-login">
+                <a href="login.html"><button class="user-button" id="login-button">Login</button></a>
+            </div>
+            <div class="user-box" id="user-box-logout" style="display: none;">
+                <button class="user-button" id="logout-button">Logout</button>
             </div>
         </div>
         <nav class="navbar">
+            <a href="index.html">INICIO</a>
             <a href="forum.html">FORUM</a>
             <a href="#destinos-populares">DESTINOS POPULARES</a>
             <a href="courses.html">CONVALIDACIONES</a>
-            <a href="available_destinations.html">VER DESTINOS</a>
+            <a href="search_destination.html">VER DESTINOS</a>
         </nav>
     </header>
     <!-- Aquí va el resto del contenido de tu página -->
@@ -39,122 +41,121 @@
 
     <!-- Aquí va todo el contenido de tu página -->
     <!-- Contenedor principal para los inputs -->
-<div class="input_ram">
-    <!-- Grupo de inputs para la primera columna -->
-    <div class="input-group">
-      <label for="apellidos">Apellidos</label>
-      <input type="text" id="apellidos" class="input-estilo" placeholder="Apellidos">
-    </div>
-  
-    <div class="input-group">
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" class="input-estilo" placeholder="Nombre">
-    </div>
-  
-    <div class="input-group">
-      <label for="dni">DNI</label>
-      <input type="text" id="dni" class="input-estilo" placeholder="DNI">
+    <div class="input_ram">
+        <!-- Grupo de inputs para la primera columna -->
+        <div class="input-group">
+        <label for="apellidos">Apellidos</label>
+        <input type="text" id="apellidos" class="input-estilo" placeholder="Apellidos">
+        </div>
+    
+        <div class="input-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" class="input-estilo" placeholder="Nombre">
+        </div>
+    
+        <div class="input-group">
+        <label for="dni">DNI</label>
+        <input type="text" id="dni" class="input-estilo" placeholder="DNI">
+        </div>
+        
+        <!-- Grupo de inputs para la segunda columna -->
+        <div class="input-group">
+        <label for="cod-destino">Código de destino</label>
+        <input type="text" id="cod-destino" class="input-estilo" placeholder="Código de destino">
+        </div>
+    
+        <div class="input-group">
+        <label for="nombre-coord">Nombre coordinador destino</label>
+        <input type="text" id="nombre-coord" class="input-estilo" placeholder="Nombre coordinador destino">
+        </div>
+    
+        <div class="input-group">
+        <label for="email-coord">Email coordinador destino</label>
+        <input type="text" id="email-coord" class="input-estilo" placeholder="Mail coordinador destino">
+        </div>
     </div>
     
-    <!-- Grupo de inputs para la segunda columna -->
-    <div class="input-group">
-      <label for="cod-destino">Código de destino</label>
-      <input type="text" id="cod-destino" class="input-estilo" placeholder="Código de destino">
+        
+    <div class="convalidaciones-container">
+        <h2>CONVALIDACIONES</h2>
+        
+        <div class="select-container">
+            <select class="select-style grado-select">
+                <option value="">Selecciona Grado</option>
+                <!-- Otras opciones se añadirán dinámicamente aquí -->
+            </select>
+
+            <select class="select-style country-select">
+                <option value="">Selecciona el País</option>
+                <!-- Otras opciones se añadirán dinámicamente aquí -->
+            </select>
+
+            <select class="select-style city-select">
+                <option value="">Selecciona la Ciudad</option>
+                <!-- Otras opciones se añadirán dinámicamente aquí -->
+            </select>
+
+            <select class="select-style university-select">
+                <option value="">Selecciona una Universidad</option>
+                <!-- Otras opciones se añadirán dinámicamente aquí -->
+            </select>
+        </div>
+
+        
+
+        <div class="select-row">
+            <div class="select-container">
+                <select id="asignaturaEspaña1" class="select-style asignatura-espana">
+                    <option value="">Selecciona una Asignatura</option>
+                    <!-- Otras opciones se añadirán dinámicamente aquí -->
+                </select>
+            </div>
+
+            <div class="select-container">
+                <select id="convalidacionErasmus1" class="select-style convalidacion-erasmus">
+                    <option value="">Selecciona la Convalidación</option>
+                    <!-- Otras opciones se añadirán dinámicamente aquí -->
+                </select>
+            </div>
+
+            <div class="select-container">
+                <select id="asignaturaEspaña2" class="select-style asignatura-espana">
+                    <option value="">Selecciona una Asignatura</option>
+                    <!-- Otras opciones se añadirán dinámicamente aquí -->
+                </select>
+            </div>
+
+            <div class="select-container">
+                <select id="convalidacionErasmus2" class="select-style convalidacion-erasmus">
+                    <option value="">Selecciona la Convalidación</option>
+                    <!-- Otras opciones se añadirán dinámicamente aquí -->
+                </select>
+            </div>
+
+            <div class="select-container">
+                <select id="asignaturaEspaña3" class="select-style asignatura-espana">
+                    <option value="">Selecciona una Asignatura</option>
+                    <!-- Otras opciones se añadirán dinámicamente aquí -->
+                </select>
+            </div>
+
+            <div class="select-container">
+                <select id="convalidacionErasmus3" class="select-style convalidacion-erasmus">
+                    <option value="">Selecciona la Convalidación</option>
+                    <!-- Otras opciones se añadirán dinámicamente aquí -->
+                </select>
+            </div>
+        </div>
+        <!-- Repite la fila de asignaturas y convalidaciones según necesites -->
     </div>
-  
-    <div class="input-group">
-      <label for="nombre-coord">Nombre coordinador destino</label>
-      <input type="text" id="nombre-coord" class="input-estilo" placeholder="Nombre coordinador destino">
+
+    <div id="ram-btn-container">
+        <button id=ram-btn type="submit">Generar RAM</button>
     </div>
-  
-    <div class="input-group">
-      <label for="email-coord">Email coordinador destino</label>
-      <input type="text" id="email-coord" class="input-estilo" placeholder="Mail coordinador destino">
-    </div>
-  </div>
-  
-    
-  <div class="convalidaciones-container">
-    <h2>CONVALIDACIONES</h2>
-    
-    <div class="select-container">
-        <select class="select-style grado-select">
-            <option value="">Selecciona Grado</option>
-            <!-- Otras opciones se añadirán dinámicamente aquí -->
-        </select>
-
-        <select class="select-style country-select">
-            <option value="">Selecciona el País</option>
-            <!-- Otras opciones se añadirán dinámicamente aquí -->
-        </select>
-
-        <select class="select-style city-select">
-            <option value="">Selecciona la Ciudad</option>
-            <!-- Otras opciones se añadirán dinámicamente aquí -->
-        </select>
-
-        <select class="select-style university-select">
-            <option value="">Selecciona una Universidad</option>
-            <!-- Otras opciones se añadirán dinámicamente aquí -->
-        </select>
-    </div>
-
-    
-
-    <div class="select-row">
-        <div class="select-container">
-            <select id="asignaturaEspaña1" class="select-style asignatura-espana">
-                <option value="">Selecciona una Asignatura</option>
-                <!-- Otras opciones se añadirán dinámicamente aquí -->
-            </select>
-        </div>
-
-        <div class="select-container">
-            <select id="convalidacionErasmus1" class="select-style convalidacion-erasmus">
-                <option value="">Selecciona la Convalidación</option>
-                <!-- Otras opciones se añadirán dinámicamente aquí -->
-            </select>
-        </div>
-
-        <div class="select-container">
-            <select id="asignaturaEspaña2" class="select-style asignatura-espana">
-                <option value="">Selecciona una Asignatura</option>
-                <!-- Otras opciones se añadirán dinámicamente aquí -->
-            </select>
-        </div>
-
-        <div class="select-container">
-            <select id="convalidacionErasmus2" class="select-style convalidacion-erasmus">
-                <option value="">Selecciona la Convalidación</option>
-                <!-- Otras opciones se añadirán dinámicamente aquí -->
-            </select>
-        </div>
-
-        <div class="select-container">
-            <select id="asignaturaEspaña3" class="select-style asignatura-espana">
-                <option value="">Selecciona una Asignatura</option>
-                <!-- Otras opciones se añadirán dinámicamente aquí -->
-            </select>
-        </div>
-
-        <div class="select-container">
-            <select id="convalidacionErasmus3" class="select-style convalidacion-erasmus">
-                <option value="">Selecciona la Convalidación</option>
-                <!-- Otras opciones se añadirán dinámicamente aquí -->
-            </select>
-        </div>
-    </div>
-    <!-- Repite la fila de asignaturas y convalidaciones según necesites -->
-</div>
-
-<div id="ram-btn-container">
-    <button id=ram-btn type="submit">Generar RAM</button>
-</div>
-
-
-   
-
-    
-
 </body>
+
+    <script type="module" src="../scripts/courses.js"></script>
+    <script type="module" src="../scripts/ram_generator.js"></script>
+    <script type="module" src="../scripts/header.js"></script>
+
 </html>
