@@ -1,6 +1,6 @@
 /* Botones para escribir y leer reseñas */
 .review-bttns {
-  background-color: #4caf50;
+  background-color: #5c67f2;
   color: white;
   padding: 10px 20px;
   margin: 5px;
@@ -11,7 +11,7 @@
 }
 
 .review-bttns:hover {
-  background-color: #45a049;
+  background-color: #5c67f2;
 }
 
 .review-card {
