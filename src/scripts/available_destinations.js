@@ -53,7 +53,10 @@ function crearTarjetaUniversidad(
         <p>Titulaciones Disponibles: ${universityData.TitulacionesDisponibles.join(
           ", "
         )}</p>
+        <div id="review-bttns">
         <button class="review-bttn" id="EscribirOpinionesButton-${universityName}"> Escribir Opinion </button>
+        <button class="review-bttn" id="LeerOpinionesButton-${universityName}">Leer Opiniones</button>
+        </div>
     `;
   //Esperar a que el DOM se actualice
   setTimeout(() => {
@@ -61,6 +64,14 @@ function crearTarjetaUniversidad(
       .getElementById(`EscribirOpinionesButton-${universityName}`)
       .addEventListener("click", function () {
         abrirModalOpiniones(universityName);
+      });
+  }, 0);
+
+  setTimeout(() => {
+    document
+      .getElementById(`LeerOpinionesButton-${universityName}`)
+      .addEventListener("click", function () {
+        abrirModalLeerOpiniones(universityName);
       });
   }, 0);
 
@@ -419,6 +430,83 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //parte de pablo
+function abrirModalLeerOpiniones(universityName) {
+  const modal = document.getElementById("modalEditar");
+  modal.style.display = "block";
+  const modalContent = document.querySelector(".modal-content");
+  modalContent.innerHTML = ""; // Limpiar el contenido anterior
+
+  const formContainer = document.createElement("div");
+  formContainer.innerHTML = `
+    <!DOCTYPE html>
+    <html lang="es">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Leer Reseñas</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+      </head>
+      <body>
+        <div class="container">
+          <h2>Reseñas de ${universityName}</h2>
+          <div id="reviewsContainer">
+          
+          </div>
+          <button class="review-bttns" id="closeModalButton">Cerrar</button>
+        </div>
+      </body>
+    </html>
+  `;
+
+  modalContent.appendChild(formContainer);
+
+  const closeModalButton = document.getElementById("closeModalButton");
+  closeModalButton.addEventListener("click", function () {
+    modal.style.display = "none";
+  });
+
+  // Cargar las reseñas de la universidad
+  cargarReseñas(universityName);
+}
+
+async function cargarReseñas(universityName) {
+  const universityRef = doc(db, "reviews", universityName);
+  const universitySnap = await getDoc(universityRef);
+
+  if (universitySnap.exists()) {
+    const universityData = universitySnap.data();
+    const reviews = universityData.Reviews || [];
+
+    const reviewsContainer = document.getElementById("reviewsContainer");
+    reviewsContainer.innerHTML = ""; // Limpiar el contenedor antes de añadir nuevas reseñas
+
+    reviews.forEach((review, index) => {
+      const reviewCard = document.createElement("div");
+      reviewCard.className = "review-card";
+      reviewCard.innerHTML = `
+        <!DOCTYPE html>
+        <html lang="es">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Leer Reseñas de ${universityName}</title>
+            <link rel="stylesheet" href="../styles/main.css" />
+            <link rel="stylesheet" href="../styles/readReviews.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+          </head>
+          <body>
+            <h3>Reseña ${index + 1}</h3>
+            <p>Puntuación: ${review.rating}</p>
+            <p>Reseña: ${review.review}</p>
+          </body>
+        </html>
+      `;
+      reviewsContainer.appendChild(reviewCard);
+    });
+  } else {
+    console.log("No hay reseñas para esta universidad.");
+  }
+}
 
 function abrirModalOpiniones(universityName) {
   const modal = document.getElementById("modalEditar");
