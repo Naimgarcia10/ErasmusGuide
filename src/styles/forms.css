@@ -3,8 +3,6 @@ body {
     background-color: #f4f4f4;
     display: block;
     justify-content: center;
-    
-    
 }
 
 #title-container {
@@ -29,8 +27,7 @@ label {
 }
 
 input[type="email"],
-input[type="password"],
-button {
+input[type="password"]{
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -39,22 +36,12 @@ button {
     box-sizing: border-box;
 }
 
-a {
+#register-form a, #login-form a {
     display: block;
     text-align: right;
     margin-bottom: 10px;
     color: #0056b3;
     text-decoration: none;
-}
-
-button {
-    background-color: #0056b3;
-    color: #fff;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0f3a6f;
 }
 
 #temporary-message-register {
@@ -66,3 +53,4 @@ button:hover {
     text-align: center;
     margin-top: 10px;
 }
+
