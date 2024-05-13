@@ -30,7 +30,6 @@ async function getUsers() {
     } else {
       sessionStorage.setItem('role', 'user');
       console.log("No es coordinador");
-      
     }
   }
 
