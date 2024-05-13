@@ -97,8 +97,19 @@ header {
   display: table-column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 30px;
   box-sizing: border-box;
+}
+
+.card-front p{
+  font-size: 20px;
+  margin-bottom: 25px;
+
+}
+
+.card-back p{
+  margin-bottom: 10px;
+
 }
 
 .card-back {
@@ -173,6 +184,11 @@ input[type="text"] {
 
 #titulo{
   text-align: center;
+  margin-top: 20px;
+}
+
+h3{
+  margin-top: 10px;
 }
 
 /* El botón cerrar */
@@ -223,7 +239,7 @@ input[type="text"] {
 .iconoEditar {
   position: absolute; /* Posicionamiento absoluto respecto a su contenedor relativo más cercano */
   cursor: pointer; /* Cambia el cursor a mano para indicar acción */
-  width: 45px;
+  width: 48px;
   height: auto;
   bottom: 300px;
 }
