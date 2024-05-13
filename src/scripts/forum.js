@@ -12,7 +12,7 @@ import {
 // Inicializa Firebase
 const { app, db } = initializeFirebase();
 
-async function addDiscussion(name, title, topic, city, body) {
+async function addDiscussion(name, title, topic, body) {
   if (title.trim() === "" || name.trim() === "") {
     console.error("El título y el nombre no pueden estar vacíos");
     return;
@@ -24,7 +24,6 @@ async function addDiscussion(name, title, topic, city, body) {
       title: title,
       createdAt: new Date(),
       thematic: topic,
-      city: city,
       description: body
     });
     console.log("Discusión creada con éxito: ", docRef.id);
@@ -36,13 +35,11 @@ async function addDiscussion(name, title, topic, city, body) {
   }
 }
 
-
 function closeDiscussionForm() {
   let formContainer = document.getElementById('discussionFormContainer');
   formContainer.style.display = "none";
   document.getElementById('showFormButton').textContent = "Crear Nueva Discusión"; // Restablecer el texto del botón
 }
-
 
 async function showDiscussions() {
   const discussionsList = document.getElementById('discussionsList');
@@ -85,7 +82,6 @@ async function showDiscussions() {
   }
 }
 
-
 // Función para mostrar/ocultar detalles de la discusión y ajustar el texto del botón
 function toggleDetails(detailsContainer, discussionId, button) {
   const isHidden = detailsContainer.style.display === 'none';
@@ -99,11 +95,6 @@ function toggleDetails(detailsContainer, discussionId, button) {
     button.textContent = 'Ver Respuestas'; // Cambia el texto a Ver Respuestas
   }
 }
-
-
-
-
-
 
 // Función para mostrar los detalles de la discusión
 async function displayDiscussionDetails(discussionId, detailsContainer) {
@@ -119,11 +110,6 @@ async function displayDiscussionDetails(discussionId, detailsContainer) {
     nameElement.textContent = `Nombre: ${data.name || 'Anónimo'}`;
     detailsContainer.appendChild(nameElement);
 
-
-    // Ciudad
-    const cityElement = document.createElement('p');
-    cityElement.textContent = `Ciudad: ${data.city || 'Sin especificar'}`;
-    detailsContainer.appendChild(cityElement);
 
     // Descripción
     const descriptionElement = document.createElement('p');
@@ -178,7 +164,6 @@ async function displayDiscussionDetails(discussionId, detailsContainer) {
   }
 }
 
-
 async function addResponseToDatabase(discussionId, responseText) {
   const discussionRef = doc(db, "forum", discussionId);
 
@@ -195,11 +180,6 @@ async function addResponseToDatabase(discussionId, responseText) {
   }
 }
 
-
-
-
-
-
 // Escucha el evento 'submit' del formulario
 document.getElementById('discussionForm').addEventListener('submit', (event) => {
   event.preventDefault();
@@ -208,25 +188,20 @@ document.getElementById('discussionForm').addEventListener('submit', (event) => 
   const titleInput = document.getElementById('discussionTitle');
   const bodyInput = document.getElementById('discussionBody');
   const topicSelect = document.getElementById('discussionTopic');
-  const citiesSelect = document.getElementById('citiesSelect');
 
   const name = nameInput.value; // Almacena el valor del nombre
   const title = titleInput.value;
   const body = bodyInput.value;
   const topic = topicSelect.value;
-  const city = citiesSelect.value;
   
-  addDiscussion(name, title, topic, city, body);
+  
+  addDiscussion(name, title, topic, body);
 
   nameInput.value = ""; // Limpia el input del nombre
   titleInput.value = "";
   bodyInput.value = "";
   topicSelect.value = "dinero";
-  citiesSelect.selectedIndex = 0;
 });
-
-
-
 
 document.getElementById('showFormButton').addEventListener('click', function() {
   let formContainer = document.getElementById('discussionFormContainer');
@@ -240,34 +215,6 @@ document.getElementById('showFormButton').addEventListener('click', function() {
 });
 
 
-async function updateCitiesSelect() {
-  // Obtén el elemento select para ciudades
-  const citiesSelect = document.getElementById('citiesSelect');
-  citiesSelect.innerHTML = ''; // Limpiar antes de añadir nuevas opciones
-
-  try {
-    const citiesSet = new Set(); // Usar un Set para mantener ciudades únicas
-    const querySnapshot = await getDocs(collection(db, "destinos"));
-
-    querySnapshot.forEach((doc) => {
-      // Asumiendo que cada documento tiene un campo 'ciudad'
-      const data = doc.data();
-      if (data.ciudad) {
-        citiesSet.add(data.ciudad);
-      }
-    });
-
-    citiesSet.forEach((city) => {
-      const option = document.createElement('option');
-      option.value = city;
-      option.textContent = city;
-      citiesSelect.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Error al obtener las ciudades: ", error);
-  }
-}
-
 
 // Escucha el evento 'click' del contenedor que funciona como botón
 document.querySelector('.header-container').addEventListener('click', function() {
@@ -277,11 +224,6 @@ document.querySelector('.header-container').addEventListener('click', function()
 });
 
 
-
-
-// Añade la nueva función updateCitiesSelect para ser llamada cuando el contenido DOM esté cargado
 document.addEventListener('DOMContentLoaded', () => {
-  showDiscussions();
-  updateCitiesSelect(); // Llama a esta función también para actualizar el select de ciudades
+  showDiscussions(); // Llama a esta función también para actualizar el select de ciudades
 });
-
