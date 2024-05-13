@@ -53,7 +53,7 @@ header {
 .card-container {
   perspective: 1000px;
   width: 300px; /* Ancho de la tarjeta */
-  height: 340px; /* Altura de la tarjeta */
+  height: 320px; /* Altura de la tarjeta */
   margin: 20px;
   display: inline-block;
   position: relative;
@@ -97,7 +97,7 @@ header {
   display: table-column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 40px;
   box-sizing: border-box;
 }
 
@@ -126,8 +126,8 @@ header {
   margin: 5% auto; /* 15% desde el top y centrado */
   padding: 20px;
   border: 1px solid #888;
-  width: 40%; /* Puede ser más o menos, dependiendo del diseño */
-  height: 65%;
+  width: 45%; /* Puede ser más o menos, dependiendo del diseño */
+  height: 75%;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sutil sombra para efecto de profundidad */
   border-radius: 10px; /* Bordes redondeados del contenedor del modal */
 }
@@ -225,7 +225,7 @@ input[type="text"] {
   cursor: pointer; /* Cambia el cursor a mano para indicar acción */
   width: 45px;
   height: auto;
-  bottom: 320px;
+  bottom: 300px;
 }
 
 .iconoEliminar {
@@ -233,7 +233,7 @@ input[type="text"] {
   cursor: pointer; /* Cambia el cursor a mano para indicar acción */
   width: 40px;
   height: auto;
-  bottom: 315px;
+  bottom: 295px;
 }
 
 .iconoEditar {
