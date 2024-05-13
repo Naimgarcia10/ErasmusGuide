@@ -56,10 +56,20 @@ async function getFirestoreUsers() {
   } else {
     
     console.log("No such document!");
+  }
 }
+
+async function logoutUser(){
+  auth.signOut().then(() => {
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('role');
+      location.href = 'index.html';
+  }).catch((error) => {
+      console.error(error);
+  });
 }
   
   
   
   
-export { getUsers, addUser, getFirestoreUsers, isCoordinator };
+export { getUsers, addUser, getFirestoreUsers, isCoordinator, logoutUser };

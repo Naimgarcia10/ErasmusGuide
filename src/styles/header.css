@@ -31,6 +31,11 @@ header {
     border: none;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.user-button:hover {
+    background-color: #0f3a6f;
 }
 
 .navbar {

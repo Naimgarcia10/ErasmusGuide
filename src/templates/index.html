@@ -11,26 +11,29 @@
     <!--<link rel="stylesheet" href="../styles/footer.css">-->
 
 </head>
-<body>
-    
-    <header>
-        <div class="top-bar">
-            <div class="logo-box">
-                <img src="logo.png" alt="Logo" class="logo">
-            </div>
-            <div class="user-box">
-                <button class="user-button">User</button>
-            </div>
-        </div>
-        <nav class="navbar">
-            <a href="index.html">INICIO</a>
-            <a href="forum.html">FORUM</a>
-            <a href="#destinos-populares">DESTINOS POPULARES</a>
-            <a href="courses.html">CONVALIDACIONES</a>
-            <a href="search_destination.html">VER DESTINOS</a>
 
-        </nav>
-    </header>
+<header>
+    <div class="top-bar">
+        <div class="logo-box">
+            <a href="index.html"><img src="../media/logo.png" alt="Logo" class="logo"></a>
+        </div>
+        <div class="user-box" id="user-box-login">
+            <a href="login.html"><button class="user-button" id="login-button">Login</button></a>
+        </div>
+        <div class="user-box" id="user-box-logout" style="display: none;">
+            <button class="user-button" id="logout-button">Logout</button>
+        </div>
+    </div>
+    <nav class="navbar">
+        <a href="index.html">INICIO</a>
+        <a href="forum.html">FORUM</a>
+        <a href="#destinos-populares">DESTINOS POPULARES</a>
+        <a href="courses.html">CONVALIDACIONES</a>
+        <a href="search_destination.html">VER DESTINOS</a>
+    </nav>
+</header>
+
+<body>
     <!-- Aquí va el resto del contenido de tu página -->
 
     <h1>Explora los Destinos Disponibles Para tu Erasmus</h1>
@@ -56,6 +59,7 @@
       
     
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script type="module" src="../scripts/index.js"></script>    
+    <script type="module" src="../scripts/index.js"></script> 
+    <script type="module" src="../scripts/header.js"></script>   
 </body>
 </html>

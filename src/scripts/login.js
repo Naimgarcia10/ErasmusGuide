@@ -35,7 +35,7 @@ async function loginUser(){
         isCoordinator(email);
         setTimeout(function() {
         temporaryMessage.textContent = '';
-        location.href = 'search_destination.html';
+        location.href = 'index.html';
         }, 3000);
     }).catch((error) => {
         const errorCode = error.code;
@@ -52,16 +52,3 @@ async function loginUser(){
             }
     });
     }
-
-    async function logoutUser(){
-        auth.signOut().then(() => {
-            sessionStorage.removeItem('user');
-            location.href = 'index.html';
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
-
-
-
-
