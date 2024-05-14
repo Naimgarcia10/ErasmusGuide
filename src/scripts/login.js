@@ -1,5 +1,5 @@
 import { initializeFirebase } from "../firebase/firebaseConnection.js";
-import {signInWithEmailAndPassword, getAuth} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"; 
+import {signInWithEmailAndPassword, getAuth, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"; 
 import { isCoordinator } from "./usersManagement.js";
 
 
@@ -18,7 +18,7 @@ loginForm.addEventListener('submit', async (e) => {
 const reset_password = document.getElementById('reset-password');
 reset_password.addEventListener('click', async (e) => {
     e.preventDefault();
-    loginUser(); 
+    resetPassword(); 
 });
 
 async function loginUser(){
@@ -51,4 +51,29 @@ async function loginUser(){
             temporaryMessage.textContent = error.message;
             }
     });
+    }
+
+    async function resetPassword(){
+        const email = loginForm['email'].value;
+        const temporaryMessage = document.getElementById('temporary-message-login');
+        if (email === '') {
+            temporaryMessage.textContent = 'Por favor, ingrese su correo electrónico';
+            return;
+        }
+
+        sendPasswordResetEmail(auth, email).then(() => {
+            temporaryMessage.textContent = 'Correo de restablecimiento de contraseña enviado';
+            setTimeout(function() {
+                temporaryMessage.textContent = '';
+                }, 5000);
+        }).catch((error) => {
+            const errorCode = error.code;
+            if (errorCode === 'auth/user-not-found') {
+                temporaryMessage.textContent = 'El usuario no existe';
+            } else if (errorCode === 'auth/invalid-email') {
+                temporaryMessage.textContent = 'El correo no es válido';
+            } else {
+                temporaryMessage.textContent = error.message;
+            }
+        });
     }
